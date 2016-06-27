@@ -1,7 +1,7 @@
 node {
     checkout scm
 
-    stage 'Build1'
+    stage 'Build'
     sh './gradlew clean build'
 
     stage 'Merge'
