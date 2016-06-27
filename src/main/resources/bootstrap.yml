@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: activities-config-microservice
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/mahanhz/activities-config.git
+
+server:
+  port: 13301
+
+management:
+  port: 13302
+  context-path: /manage
