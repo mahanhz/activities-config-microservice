@@ -1,7 +1,7 @@
 buildscript {
 	ext {
 		springBootVersion = '1.3.5.RELEASE'
-        //gradleSemanticVersion = '1.1.1'
+        gradleSemanticVersion = '1.1.1'
 
 
 		logbackVersion = '1.1.7'
@@ -18,18 +18,18 @@ buildscript {
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-        //classpath("gradle.plugin.net.vivin:gradle-semantic-build-versioning:${gradleSemanticVersion}")
+        classpath("gradle.plugin.net.vivin:gradle-semantic-build-versioning:${gradleSemanticVersion}")
 
 	}
 }
 
 apply plugin: 'java'
 apply plugin: 'spring-boot'
-//apply plugin: 'net.vivin.gradle-semantic-build-versioning'
+apply plugin: 'net.vivin.gradle-semantic-build-versioning'
 
-/*project.version.with {
+project.version.with {
     startingVersion = '1.0.0'
-}*/
+}
 
 jar {
 	baseName = 'activities-config-microservice'
