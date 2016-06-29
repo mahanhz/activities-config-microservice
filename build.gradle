@@ -34,6 +34,11 @@ group = 'com.amhzing.activities-config'
 
 project.version.with {
     startingVersion = '1.0.0'
+	autobump {
+		majorPattern =~ /^\[bump-major\]$/
+		minorPattern =~ /^\[bump-minor\]$/
+		patchPattern =~ /^\[bump-patch\]$/
+	}
 }
 
 jar {
