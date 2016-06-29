@@ -24,8 +24,11 @@ buildscript {
 }
 
 apply plugin: 'java'
+apply plugin: 'maven'
 apply plugin: 'spring-boot'
 apply plugin: 'net.vivin.gradle-semantic-build-versioning'
+
+group = 'com.amhzing.activities-config'
 
 project.version.with {
     startingVersion = '1.0.0'
@@ -67,3 +70,16 @@ dependencyManagement {
 
 // Make the System.properties available in the bootRun task.
 bootRun.systemProperties = System.properties
+
+uploadArchives {
+	repositories {
+		mavenDeployer {
+			repository(url: "http://192.168.1.31:8081/repository/amhzing-releases") {
+				authentication(userName: mavenUser, password: mavenPassword)
+			}
+			snapshotRepository(url: "http://192.168.1.31:8081/repository/amhzing-snapshots") {
+				authentication(userName: mavenUser, password: mavenPassword)
+			}
+		}
+	}
+}
