@@ -1,0 +1,29 @@
+group = 'com.amhzing.activities-config'
+version = file("version.txt").text
+
+jar {
+	baseName = 'activities-config-microservice'
+}
+
+task release << {
+	println "Building release version=$version"
+}
+
+gradle.taskGraph.whenReady { taskGraph ->
+	if (!taskGraph.hasTask(release)) {
+		version += '-SNAPSHOT'
+	}
+}
+
+uploadArchives {
+	repositories {
+		mavenDeployer {
+			repository(url: "${NEXUS_REPO_URL}-releases") {
+				authentication(userName: mavenUser, password: mavenPassword)
+			}
+			snapshotRepository(url: "${NEXUS_REPO_URL}-snapshots") {
+				authentication(userName: mavenUser, password: mavenPassword)
+			}
+		}
+	}
+}
