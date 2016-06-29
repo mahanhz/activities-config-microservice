@@ -1,5 +1,7 @@
 buildscript {
 	ext {
+		NEXUS_REPO_URL = 'http://192.168.1.31:8081/repository/amhzing'
+
 		springBootVersion = '1.3.5.RELEASE'
         gradleSemanticVersion = '1.1.1'
 
@@ -74,10 +76,10 @@ bootRun.systemProperties = System.properties
 uploadArchives {
 	repositories {
 		mavenDeployer {
-			repository(url: "http://192.168.1.31:8081/repository/amhzing-releases") {
+			repository(url: "${NEXUS_REPO_URL}-releases") {
 				authentication(userName: mavenUser, password: mavenPassword)
 			}
-			snapshotRepository(url: "http://192.168.1.31:8081/repository/amhzing-snapshots") {
+			snapshotRepository(url: "${NEXUS_REPO_URL}-snapshots") {
 				authentication(userName: mavenUser, password: mavenPassword)
 			}
 		}
