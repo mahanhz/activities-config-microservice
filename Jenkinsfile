@@ -12,5 +12,5 @@ node {
     build job: 'activities-config-microservice-merge', parameters: [[$class: 'GitParameterValue', name: 'GIT_COMMIT_ID', value: commit_id]]
 
     stage 'Publish snapshot'
-    sh './gradlew uploadArchives'
+    sh './gradlew build uploadArchives'
 }
