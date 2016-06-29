@@ -21,7 +21,7 @@
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!-- if the LOG_PATH is not specified then default to the current directory . -->
-        <file>${LOG_PATH:-.}/${logFileName}.log</file>
+        <file>${LOG_FOLDER:-.}/${logFileName}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover -->
             <fileNamePattern>${logFileName}.%d{yyyy-MM-dd}.log</fileNamePattern>
