@@ -1,0 +1,33 @@
+def deployFolder="deploy/"
+def deployPrefix="activities_config_"
+
+def deployScript = deployPrefix + "deploy.sh"
+def deployScriptLocation = deployFolder + deployScript
+
+def productionConf = deployPrefix + "production.conf"
+def productionConfLocation = deployFolder  + productionConf
+
+def remoteLocation = "/home/pi"
+
+remotes {
+    appServer1 {
+        host = '192.168.1.33'
+        user = 'pi'
+        password = 'raspberry'
+    }
+}
+
+task deployToProduction << {
+    ssh.run {
+        session(remotes.appServer1) {
+            put from: "${productionConfLocation}", into: "${remoteLocation}"
+            put from: "${deployScriptLocation}", into: "${remoteLocation}"
+
+            execute "sudo chmod 744 ${productionConf}"
+            execute "sudo chmod 744 ${deployScript}"
+
+            execute "sudo ./${deployScript} release"
+            execute "sudo rm ${deployPrefix}*"
+        }
+    }
+}
