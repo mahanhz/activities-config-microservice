@@ -31,3 +31,18 @@ task deployToProduction << {
         }
     }
 }
+
+task deploySnapshot << {
+    ssh.run {
+        session(remotes.appServer1) {
+            put from: "${productionConfLocation}", into: "${remoteLocation}"
+            put from: "${deployScriptLocation}", into: "${remoteLocation}"
+
+            execute "sudo chmod 744 ${productionConf}"
+            execute "sudo chmod 744 ${deployScript}"
+
+            execute "sudo ./${deployScript} snapshot"
+            execute "sudo rm ${deployPrefix}*"
+        }
+    }
+}

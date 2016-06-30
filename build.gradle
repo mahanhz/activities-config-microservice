@@ -68,3 +68,12 @@ apply from: 'publish.gradle'
 // Deploy
 apply from: 'deploy.gradle'
 
+// Automatically expand info properties
+processResources {
+	filesMatching('**/*.yml') { expand(project.properties) }
+}
+
+ext.jenkinsBuildId = System.env.BUILD_ID
+ext.jenkinsBuildNumber = System.env.BUILD_NUMBER
+ext.jenkinsGitCommit = System.env.GIT_COMMIT
+ext.jenkinsGitBranch = System.env.GIT_BRANCH

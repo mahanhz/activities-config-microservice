@@ -1,7 +1,7 @@
 <configuration>
 
-    <property scope="local" name="logFileName" value="activities-config-microservice" />
-    <property scope="local" name="productionProfile" value="production" />
+    <property name="logFileName" value="activities-config-microservice" />
+    <property name="productionProfile" value="production" />
 
     <if condition='"${productionProfile}".equals("${spring.profiles.active}")'>
         <then>
@@ -20,7 +20,7 @@
     </appender>
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <!-- if the LOG_PATH is not specified then default to the current directory . -->
+        <!-- if the app.log.path is not specified then default to the current directory . -->
         <file>${app.log.path:-.}/${logFileName}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover -->
