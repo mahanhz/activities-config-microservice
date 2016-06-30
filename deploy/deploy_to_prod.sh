@@ -11,9 +11,9 @@ export LOG_FOLDER=/var/opt/$LOG_DIR
 # Override spring boot LOG_FILENAME
 export LOG_FILENAME=console.log
 
-export PID_DIR=pid
+# export PID_DIR=pid
 # Override spring boot PID_FOLDER
-export PID_FOLDER=/var/$PID_DIR
+# export PID_FOLDER=/var/$PID_DIR
 
 export NEXUS_URL=http://192.168.1.31:8082/nexus/service/local/artifact/maven/content
 export REPO_ID=releases
@@ -38,10 +38,10 @@ sudo chown -R $APP_USER:$APP_USER $APP_DIR
 sudo chmod 700 $APP_DIR
 
 # -- Set up PID directory (assuming /var folder already exists)
-cd /var
-sudo mkdir -p $PID_DIR
-sudo chown -R $APP_USER:$APP_USER $PID_DIR
-sudo chmod 700 $PID_DIR
+# cd /var
+# sudo mkdir -p $PID_DIR
+# sudo chown -R $APP_USER:$APP_USER $PID_DIR
+# sudo chmod 700 $PID_DIR
 
 # -- Set up Log directory (assuming /var/opt folder already exists)
 cd /var/opt
