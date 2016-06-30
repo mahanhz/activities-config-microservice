@@ -72,3 +72,8 @@ apply from: 'deploy.gradle'
 processResources {
 	filesMatching('**/*.yml') { expand(project.properties) }
 }
+
+ext.jenkinsBuildId = System.env.BUILD_ID
+ext.jenkinsBuildNumber = System.env.BUILD_NUMBER
+ext.jenkinsGitCommit = System.env.GIT_COMMIT
+ext.jenkinsGitBranch = System.env.GIT_BRANCH
