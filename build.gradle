@@ -68,3 +68,7 @@ apply from: 'publish.gradle'
 // Deploy
 apply from: 'deploy.gradle'
 
+// Automatically expand info properties
+processResources {
+	filesMatching('**/*.yml') { expand(project.properties) }
+}

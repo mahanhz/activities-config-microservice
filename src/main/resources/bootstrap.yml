@@ -13,3 +13,14 @@ server:
 management:
   port: 13302
   context-path: /manage
+
+info:
+  build:
+    name: ${name}
+    description: ${description}
+    version: ${version}
+    jenkins:
+      build-id: ${env.BUILD_ID}
+      build-number: ${env.BUILD_NUMBER}
+      git-commit: ${env.GIT_COMMIT}
+      git-branch: ${env.GIT_BRANCH}
