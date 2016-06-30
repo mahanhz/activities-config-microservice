@@ -20,6 +20,7 @@ info:
     description: ${description}
     version: ${version}
     jenkins:
+      build-timestamp: ${jenkinsBuildTimestamp}
       build-id: ${jenkinsBuildId}
       build-number: ${jenkinsBuildNumber}
       git-commit: ${jenkinsGitCommit}
