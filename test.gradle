@@ -1,0 +1,9 @@
+def integrationTests = 'com/amhzing/activitiesconfig/integrationtest/**'
+
+test {
+    exclude integrationTests
+}
+
+task integrationTest(type:Test) {
+    include integrationTests
+}
