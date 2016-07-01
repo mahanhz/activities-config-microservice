@@ -22,7 +22,7 @@ node {
     // input 'Deploy snapshot?'
     // sh './gradlew deployToProduction -PrepoId=snapshots -PartifactVersion=LATEST'
 
-    stage name: 'Publish release candidate', concurrency: 1
+    stage 'Publish release candidate'
     input 'Publish release candidate?'
     sh './gradlew build release uploadArchives'
 
