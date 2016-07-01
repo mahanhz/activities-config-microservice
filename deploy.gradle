@@ -1,10 +1,10 @@
 def deployFolder="deploy/"
-def deployPrefix="activities_config_"
+def deployFilePrefix="activities_config_"
 
-def deployScript = deployPrefix + "deploy.sh"
+def deployScript = deployFilePrefix + "deploy.sh"
 def deployScriptLocation = deployFolder + deployScript
 
-def productionConf = deployPrefix + "production.conf"
+def productionConf = deployFilePrefix + "production.conf"
 def productionConfLocation = deployFolder  + productionConf
 
 def remoteLocation = "/home/pi"
@@ -26,23 +26,8 @@ task deployToProduction << {
             execute "sudo chmod 744 ${productionConf}"
             execute "sudo chmod 744 ${deployScript}"
 
-            execute "sudo ./${deployScript} release"
-            execute "sudo rm ${deployPrefix}*"
-        }
-    }
-}
-
-task deploySnapshot << {
-    ssh.run {
-        session(remotes.appServer1) {
-            put from: "${productionConfLocation}", into: "${remoteLocation}"
-            put from: "${deployScriptLocation}", into: "${remoteLocation}"
-
-            execute "sudo chmod 744 ${productionConf}"
-            execute "sudo chmod 744 ${deployScript}"
-
-            execute "sudo ./${deployScript} snapshot"
-            execute "sudo rm ${deployPrefix}*"
+            execute "sudo ./${deployScript} ${repoId} ${artifactVersion} ${deployFilePrefix}"
+            execute "sudo rm ${deployFilePrefix}*"
         }
     }
 }

@@ -1,5 +1,10 @@
 #!/bin/sh
 
+echo "Passed in arguments are: $1, $2, $3"
+export REPO_ID=$1
+export VERSION=$2
+export DEPLOY_FILE_PREFIX=$3
+
 export HOME_DIR=/home/pi
 
 echo "This script assumes that the appadm user exists"
@@ -9,15 +14,6 @@ export APP_NAME=activities-config-microservice
 export APP_DIR=$APP_NAME
 
 export LOG_DIR=log
-
-if [ "$1" = "release" ]
-then
-    export REPO_ID=releases
-    export VERSION=RELEASE
-else
-    export REPO_ID=snapshots
-    export VERSION=LATEST
-fi
 
 export NEXUS_URL=http://192.168.1.31:8082/nexus/service/local/artifact/maven/content
 export GROUP_ID=com.amhzing.activities-config
@@ -53,9 +49,9 @@ sudo chmod 500 $ARTIFACT
 
 echo "Move the conf folder (this assumes that the conf file was placed in the user's home directory)"
 cd $HOME_DIR
-sudo mv activities_config_*.conf /opt/$APP_DIR
+sudo mv $DEPLOY_FILE_PREFIX*.conf /opt/$APP_DIR
 cd /opt/$APP_DIR
-sudo mv activities_config_*.conf $CONF
+sudo mv $DEPLOY_FILE_PREFIX*.conf $CONF
 sudo chown -R $APP_USER:$APP_USER $CONF
 sudo chmod 500 $CONF
 
