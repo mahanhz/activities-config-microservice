@@ -12,21 +12,21 @@ node {
     stage 'Integration test'
     sh './gradlew integrationTest'
 
-    stage 'Merge'
+    stage name: 'Merge', concurrency: 1
     build job: 'Activities-config-merge', parameters: [[$class: 'GitParameterValue', name: 'GIT_COMMIT_ID', value: commit_id]]
 
-    stage 'Publish snapshot'
+    stage name: 'Publish snapshot', concurrency: 1
     sh './gradlew build uploadArchives'
 
-    stage 'Deploy snapshot'
-    input 'Deploy snapshot?'
-    sh './gradlew deployToProduction -PrepoId=snapshots -PartifactVersion=LATEST'
+    // stage name: 'Deploy snapshot', concurrency: 1
+    // input 'Deploy snapshot?'
+    // sh './gradlew deployToProduction -PrepoId=snapshots -PartifactVersion=LATEST'
 
-    stage 'Publish release candidate'
+    stage name: 'Publish release candidate', concurrency: 1
     input 'Publish release candidate?'
     sh './gradlew build release uploadArchives'
 
-    stage 'Deploy release'
+    stage name: 'Deploy release', concurrency: 1
     input 'Deploy release?'
     sh './gradlew deployToProduction -PrepoId=releases -PartifactVersion=RELEASE'
 }
