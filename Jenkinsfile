@@ -24,7 +24,7 @@ node {
 
     stage 'Publish release candidate'
     input 'Publish release candidate?'
-    sh './gradlew build release uploadArchives'
+    sh './gradlew clean build release uploadArchives -x test'
 
     stage name: 'Deploy release', concurrency: 1
     input 'Deploy release?'
