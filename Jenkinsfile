@@ -13,8 +13,20 @@ node {
     sh './gradlew integrationTest'
 
     stage 'Merge'
-    build job: 'activities-config-microservice-merge', parameters: [[$class: 'GitParameterValue', name: 'GIT_COMMIT_ID', value: commit_id]]
+    build job: 'Activities-config-merge', parameters: [[$class: 'GitParameterValue', name: 'GIT_COMMIT_ID', value: commit_id]]
 
     stage 'Publish snapshot'
     sh './gradlew build uploadArchives'
+
+    stage 'Deploy snapshot'
+    input 'Deploy snapshot?'
+    sh './gradlew deployToProduction -PrepoId=snapshots -PartifactVersion=LATEST'
+
+    stage 'Publish release candidate'
+    input 'Publish release candidate?'
+    sh './gradlew build release uploadArchives'
+
+    stage 'Deploy release'
+    input 'Deploy release?'
+    sh './gradlew deployToProduction -PrepoId=releases -PartifactVersion=RELEASE'
 }
