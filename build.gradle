@@ -62,6 +62,9 @@ springBoot {
 // Make the System.properties available in the bootRun task.
 bootRun.systemProperties = System.properties
 
+// Test
+apply from: 'test.gradle'
+
 // Publish to Nexus
 apply from: 'publish.gradle'
 
