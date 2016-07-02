@@ -1,9 +1,15 @@
 def integrationTests = 'com/amhzing/activitiesconfig/integrationtest/**'
+def smokeTests = 'com/amhzing/activitiesconfig/smoketest/**'
 
 test {
     exclude integrationTests
+    exclude smokeTests
 }
 
 task integrationTest(type:Test) {
     include integrationTests
+}
+
+task smokeTest(type:Test) {
+    include smokeTests
 }
