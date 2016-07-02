@@ -1,0 +1,22 @@
+#!groovy
+
+stage 'Approve deploy?'
+timeout(time: 5, unit: 'MINUTES') {
+    input message: 'Deploy snapshot?'
+}
+
+stage name: 'Deploy snapshot', concurrency: 1
+node {
+    sh './gradlew deployToProduction -PrepoId=snapshots -PartifactVersion=LATEST'
+}
+
+stage 'Heatlth check (prod-1)'
+node {
+    retry(5) {
+        // Give the application some time to start up
+        sleep 30
+
+        sh 'SPRING_PROFILES_ACTIVE=prodServer1 ./gradlew clean smokeTest'
+    }
+}
+

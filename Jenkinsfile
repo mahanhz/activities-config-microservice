@@ -32,10 +32,6 @@ node {
     sh './gradlew uploadArchives'
 }
 
-// stage name: 'Deploy snapshot', concurrency: 1
-// input 'Deploy snapshot?'
-// sh './gradlew deployToProduction -PrepoId=snapshots -PartifactVersion=LATEST'
-
 stage 'Approve RC?'
 timeout(time: 1, unit: 'DAYS') {
     input message: 'Publish release candidate?'

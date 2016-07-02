@@ -10,7 +10,7 @@ def productionConfLocation = deployFolder  + productionConf
 def remoteLocation = "/home/pi"
 
 remotes {
-    appServer1 {
+    prodServer1 {
         host = '192.168.1.33'
         user = 'pi'
         password = 'raspberry'
@@ -19,7 +19,7 @@ remotes {
 
 task deployToProduction << {
     ssh.run {
-        session(remotes.appServer1) {
+        session(remotes.prodServer1) {
             put from: "${productionConfLocation}", into: "${remoteLocation}"
             put from: "${deployScriptLocation}", into: "${remoteLocation}"
 
