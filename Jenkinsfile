@@ -1,3 +1,5 @@
+#!groovy
+
 COMMIT_ID = ""
 APP_VERSION = ""
 
@@ -17,5 +19,37 @@ node {
 
 stage 'Integration test'
 node {
-    echo "Commit id:" + COMMIT_ID + "and version: " + APP_VERSION
+    sh './gradlew integrationTest'
 }
+
+stage name: 'Merge', concurrency: 1
+node {
+    build job: 'Activities-config-merge', parameters: [[$class: 'GitParameterValue', name: 'GIT_COMMIT_ID', value: COMMIT_ID]]
+}
+
+stage name: 'Publish snapshot', concurrency: 1
+node {
+    sh './gradlew uploadArchives'
+}
+
+// stage name: 'Deploy snapshot', concurrency: 1
+// input 'Deploy snapshot?'
+// sh './gradlew deployToProduction -PrepoId=snapshots -PartifactVersion=LATEST'
+
+stage 'Approve RC?'
+timeout(time: 1, unit: 'DAYS') {
+    input message: 'Publish release candidate?'
+}
+
+stage 'Publish release candidate'
+node {
+    sh './gradlew clean build release uploadArchives -x test'
+
+    build job: 'Activities-config-tag-release',
+                  parameters: [[$class: 'GitParameterValue', name: 'GIT_COMMIT_ID', value: COMMIT_ID],
+                               [$class: 'StringParameterValue', name: 'APP_VERSION', value: APP_VERSION]]
+}
+
+// stage name: 'Deploy release', concurrency: 1
+// input 'Deploy release?'
+// sh './gradlew deployToProduction -PrepoId=releases -PartifactVersion=RELEASE'
