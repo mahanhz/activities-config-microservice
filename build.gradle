@@ -76,6 +76,7 @@ processResources {
 	filesMatching('**/*.yml') { expand(project.properties) }
 }
 
+ext.jenkinsJobName = System.env.JOB_NAME
 ext.jenkinsBuildTimestamp = System.env.BUILD_TIMESTAMP
 ext.jenkinsBuildId = System.env.BUILD_ID
 ext.jenkinsBuildNumber = System.env.BUILD_NUMBER
