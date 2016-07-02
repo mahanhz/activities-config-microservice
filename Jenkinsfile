@@ -22,7 +22,7 @@ node {
 stage 'Integration test'
 node {
     unstash 'source'
-    sh 'sudo chmod 755 gradlew'
+    sh 'chmod 755 gradlew'
     sh './gradlew integrationTest'
 }
 
