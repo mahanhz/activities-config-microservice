@@ -9,7 +9,6 @@ node {
     def app_version = readFile("version.txt").trim()
 
     stage 'Tag'
-        echo 'About to create tag: v${version}-b${BUILD_NUMBER}-t${BUILD_TIMESTAMP}'
         build job: 'Activities-config-tag-release',
                       parameters: [[$class: 'GitParameterValue', name: 'GIT_COMMIT_ID', value: commit_id],
                                    [$class: 'StringParameterValue', name: 'APP_VERSION', value: app_version]]
