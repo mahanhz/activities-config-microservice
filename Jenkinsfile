@@ -26,6 +26,9 @@ node {
         timeout(time: 1, unit: 'DAYS') {
             input 'Publish release candidate?'
             sh './gradlew clean build release uploadArchives -x test'
+            echo 'About to create tag: v${version}-b${env.BUILD_NUMBER}-t${env.BUILD_TIMESTAMP}'
+            sh 'git tag -a v${version}-b${env.BUILD_NUMBER}-t${env.BUILD_TIMESTAMP} -m "Release v${version}-b${env.BUILD_NUMBER}-t${env.BUILD_TIMESTAMP}"'
+            sh 'git push --tags'
         }
 
     // stage name: 'Deploy release', concurrency: 1
