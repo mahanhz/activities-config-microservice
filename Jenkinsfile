@@ -7,26 +7,28 @@ node {
     def commit_id = readFile('commit').trim()
 
     stage 'Build'
-    sh './gradlew clean build'
+        sh './gradlew clean build'
 
     stage 'Integration test'
-    sh './gradlew integrationTest'
+        sh './gradlew integrationTest'
 
     stage name: 'Merge', concurrency: 1
-    build job: 'Activities-config-merge', parameters: [[$class: 'GitParameterValue', name: 'GIT_COMMIT_ID', value: commit_id]]
+        build job: 'Activities-config-merge', parameters: [[$class: 'GitParameterValue', name: 'GIT_COMMIT_ID', value: commit_id]]
 
     stage name: 'Publish snapshot', concurrency: 1
-    sh './gradlew build uploadArchives'
+        sh './gradlew uploadArchives'
 
     // stage name: 'Deploy snapshot', concurrency: 1
     // input 'Deploy snapshot?'
     // sh './gradlew deployToProduction -PrepoId=snapshots -PartifactVersion=LATEST'
 
     stage 'Publish release candidate'
-    input 'Publish release candidate?'
-    sh './gradlew clean build release uploadArchives -x test'
+        timeout(time: 1, unit: 'DAYS') {
+            input 'Publish release candidate?'
+            sh './gradlew clean build release uploadArchives -x test'
+        }
 
-    stage name: 'Deploy release', concurrency: 1
-    input 'Deploy release?'
-    sh './gradlew deployToProduction -PrepoId=releases -PartifactVersion=RELEASE'
+    // stage name: 'Deploy release', concurrency: 1
+    // input 'Deploy release?'
+    // sh './gradlew deployToProduction -PrepoId=releases -PartifactVersion=RELEASE'
 }
