@@ -29,7 +29,7 @@ node {
 
 stage name: 'Publish snapshot', concurrency: 1
 node {
-    sh './gradlew uploadArchives'
+    sh './gradlew build uploadArchives'
 }
 
 stage 'Approve RC?'
