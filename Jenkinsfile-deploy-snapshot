@@ -7,16 +7,18 @@ timeout(time: 5, unit: 'MINUTES') {
 
 stage name: 'Deploy snapshot', concurrency: 1
 node {
+    checkout scm
+    
     sh './gradlew deployToProduction -PrepoId=snapshots -PartifactVersion=LATEST'
 }
 
-stage 'Heatlth check (prod-1)'
+stage 'Health check'
 node {
     retry(5) {
         // Give the application some time to start up
-        sleep 30
+        // sleep 30
 
-        sh 'SPRING_PROFILES_ACTIVE=prodServer1 ./gradlew clean smokeTest'
+        sh 'SPRING_PROFILES_ACTIVE=prodServer1 ./gradlew smokeTest'
     }
 }
 
