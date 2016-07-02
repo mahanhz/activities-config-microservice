@@ -6,7 +6,7 @@ node {
     sh 'git rev-parse HEAD > commit'
     def commit_id = readFile('commit').trim()
 
-    def app_version = file("version.txt").text
+    def app_version = readFile("version.txt").trim()
 
     stage 'Tag'
         echo 'About to create tag: v${version}-b${BUILD_NUMBER}-t${BUILD_TIMESTAMP}'
