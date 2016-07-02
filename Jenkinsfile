@@ -21,23 +21,20 @@ node {
 
 stage 'Integration test'
 node {
-    unstash 'source' {
-        sh './gradlew integrationTest'
-    }
+    unstash 'source'
+    sh './gradlew integrationTest'
 }
 
 stage name: 'Merge', concurrency: 1
 node {
-    unstash 'source' {
-        build job: 'Activities-config-merge', parameters: [[$class: 'GitParameterValue', name: 'GIT_COMMIT_ID', value: COMMIT_ID]]
-    }
+    unstash 'source'
+    build job: 'Activities-config-merge', parameters: [[$class: 'GitParameterValue', name: 'GIT_COMMIT_ID', value: COMMIT_ID]]
 }
 
 stage name: 'Publish snapshot', concurrency: 1
 node {
-    unstash 'source' {
-        sh './gradlew build uploadArchives'
-    }
+    unstash 'source'
+    sh './gradlew build uploadArchives'
 }
 
 stage 'Approve RC?'
@@ -47,11 +44,10 @@ timeout(time: 1, unit: 'DAYS') {
 
 stage 'Publish release candidate'
 node {
-    unstash 'source' {
-        sh './gradlew clean build release uploadArchives -x test'
+    unstash 'source'
+    sh './gradlew clean build release uploadArchives -x test'
 
-        build job: 'Activities-config-tag-release',
-                      parameters: [[$class: 'GitParameterValue', name: 'GIT_COMMIT_ID', value: COMMIT_ID],
-                                   [$class: 'StringParameterValue', name: 'APP_VERSION', value: APP_VERSION]]
-    }
+    build job: 'Activities-config-tag-release',
+                  parameters: [[$class: 'GitParameterValue', name: 'GIT_COMMIT_ID', value: COMMIT_ID],
+                               [$class: 'StringParameterValue', name: 'APP_VERSION', value: APP_VERSION]]
 }
