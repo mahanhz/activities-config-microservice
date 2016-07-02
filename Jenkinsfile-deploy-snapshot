@@ -7,8 +7,6 @@ timeout(time: 5, unit: 'MINUTES') {
 
 stage name: 'Deploy snapshot', concurrency: 1
 node {
-    checkout scm
-    
     sh './gradlew deployToProduction -PrepoId=snapshots -PartifactVersion=LATEST'
 }
 
