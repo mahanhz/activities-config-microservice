@@ -51,7 +51,7 @@ node {
     def currentVersion = version()
     build job: 'Activities-config-publish-release',
                   parameters: [[$class: 'StringParameterValue', name: 'CURRENT_VERSION', value: currentVersion],
-                  [$class: 'StringParameterValue', name: 'SEMANTIC_VERSION_SEGMENT', value: env.semanticVersionSegment]]
+                  [$class: 'StringParameterValue', name: 'SEMANTIC_VERSION_SEGMENT', value: semanticVersionSegment]]
 }
 
 def version() {
