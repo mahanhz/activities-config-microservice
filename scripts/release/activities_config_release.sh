@@ -1,21 +1,23 @@
 #!/bin/sh
 
 echo "Passed in arguments are: $1, $2"
-export VERSION=$1
-export RELEASE_TYPE=$2
+version=$1
+semanticVersionSegment=$2
 
-major=`echo $VERSION | cut -d. -f1`
-minor=`echo $VERSION | cut -d. -f2`
-patch=`echo $VERSION | cut -d. -f3`
+echo "current version=$version"
+
+major=`echo $version | cut -d. -f1`
+minor=`echo $version | cut -d. -f2`
+patch=`echo $version | cut -d. -f3`
 
 echo "major=$major, minor=$minor, patch=$patch"
 
-if [ "$RELEASE_TYPE" == "patch" ]; then
+if [ "$semanticVersionSegment" == "patch" ]; then
 	((patch++))
-elif [ "$RELEASE_TYPE" == "minor" ]; then
+elif [ "$semanticVersionSegment" == "minor" ]; then
 	((minor++))
 	patch=0
-elif [ "$RELEASE_TYPE" == "major" ]; then
+elif [ "$semanticVersionSegment" == "major" ]; then
 	((major++))
 	minor=0
 	patch=0
@@ -23,8 +25,8 @@ else
 	echo "Invalid release type"
 fi
 
-versionToRelease=$major.$minor.$patch
+version=$major.$minor.$patch
 
-echo "releaseVersion=$versionToRelease"
+echo "new version=$version"
 
-./gradlew release -Prelease.useAutomaticVersion=true -Prelease.releaseVersion=$versionToRelease -Prelease.newVersion=$versionToRelease
+./gradlew release -Prelease.useAutomaticVersion=true -Prelease.releaseVersion=$version -Prelease.newVersion=$version
