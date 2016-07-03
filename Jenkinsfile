@@ -5,10 +5,13 @@ APP_VERSION = ""
 
 node {
 stage 'Version'
-echo "The current version is: " + readFile('gradle.properties')
+echo "1 - The current version is: " + Aversion()
+
+APP_VERSION = readFile('gradle.properties')
+echo "2 - The current version is: " + APP_VERSION.substring(APP_VERSION.lastIndexOf("="))
 }
 
 def version() {
-    def matcher = readFile('gradle.properties') =~ 'version=(.+)-.*'
-    matcher ? matcher[0][1].tokenize(".") : null
+    def version = readFile('gradle.properties')
+    version.substring(version.lastIndexOf("="))
 }
