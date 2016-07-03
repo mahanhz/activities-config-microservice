@@ -5,12 +5,12 @@ jar {
 	baseName = 'activities-config-microservice'
 }
 
-task release << {
-	println "Building release version=$version"
+task snapshot << {
+	println "Building snapshot version=$version"
 }
 
 gradle.taskGraph.whenReady { taskGraph ->
-	if (!taskGraph.hasTask(release)) {
+	if (taskGraph.hasTask(snapshot)) {
 		version += '-SNAPSHOT'
 	}
 }
