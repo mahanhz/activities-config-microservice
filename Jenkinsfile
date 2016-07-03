@@ -46,11 +46,12 @@ node {
     parameters: [[$class: 'ChoiceParameterDefinition',
                   choices: 'patch\nminor\nmajor',
                   description: 'Semantic version segment to update',
-                  name: 'SEMANTIC_VERSION_SEGMENT']]
+                  name: 'semanticVersionSegment']]
 
     def currentVersion = version()
     build job: 'Activities-config-publish-release',
-                  parameters: [[$class: 'StringParameterValue', name: 'CURRENT_VERSION', value: currentVersion]]
+                  parameters: [[$class: 'StringParameterValue', name: 'CURRENT_VERSION', value: currentVersion],
+                  [$class: 'StringParameterValue', name: 'SEMANTIC_VERSION_SEGMENT', value: env.semanticVersionSegment]]
 }
 
 def version() {
