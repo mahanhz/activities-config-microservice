@@ -1,10 +1,10 @@
 #!groovy
 
 COMMIT_ID = ""
-APP_VERSION = version()
+APP_VERSION = ""
 
 stage 'Version'
-echo "The current version is: " + APP_VERSION
+echo "The current version is: " + version()
 
 def version() {
     def matcher = readFile('gradle.properties') =~ 'version=(.+)-.*'
