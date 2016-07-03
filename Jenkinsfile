@@ -42,6 +42,12 @@ timeout(time: 1, unit: 'DAYS') {
 
 stage 'Publish release candidate'
 node {
+    input message: 'Determine semantic version?',
+    parameters: [[$class: 'ChoiceParameterDefinition',
+                  choices: ['patch', 'minor', 'major'],
+                  description: 'Semantic version to update',
+                  name: 'SEMANTIC_VERSION_SEGMENT']]
+
     def currentVersion = version()
     build job: 'Activities-config-publish-release',
                   parameters: [[$class: 'StringParameterValue', name: 'CURRENT_VERSION', value: currentVersion]]
