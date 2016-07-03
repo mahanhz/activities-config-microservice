@@ -19,12 +19,12 @@ node {
     APP_VERSION = readFile("version.txt").trim()
 }
 
-stage 'Integration test'
+/*stage 'Integration test'
 node {
     unstash 'source'
     sh 'chmod 755 gradlew'
     sh './gradlew integrationTest'
-}
+}*/
 
 stage name: 'Merge', concurrency: 1
 node {
