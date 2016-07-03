@@ -45,7 +45,7 @@ node {
     input message: 'Determine semantic version?',
     parameters: [[$class: 'ChoiceParameterDefinition',
                   choices: 'patch\nminor\nmajor',
-                  description: 'Semantic version to update',
+                  description: 'Semantic version segment to update',
                   name: 'SEMANTIC_VERSION_SEGMENT']]
 
     def currentVersion = version()
