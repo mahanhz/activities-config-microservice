@@ -1,7 +1,6 @@
 #!groovy
 
 COMMIT_ID = ""
-APP_VERSION = ""
 
 stage 'Build'
 node {
@@ -15,8 +14,6 @@ node {
     // See http://stackoverflow.com/questions/36304208/jenkins-workflow-checkout-accessing-branch-name-and-git-commit
     sh 'git rev-parse HEAD > commit'
     COMMIT_ID = readFile('commit').trim()
-
-    APP_VERSION = readFile("version.txt").trim()
 }
 
 /*stage 'Integration test'
@@ -28,8 +25,6 @@ node {
 
 stage name: 'Merge', concurrency: 1
 node {
-    unstash 'source'
-    sh 'chmod 755 gradlew'
     build job: 'Activities-config-merge', parameters: [[$class: 'GitParameterValue', name: 'GIT_COMMIT_ID', value: COMMIT_ID]]
 }
 
@@ -38,7 +33,7 @@ node {
     unstash 'source'
     sh 'chmod 755 gradlew'
     sh './gradlew build uploadArchives'
-}
+}*/
 
 stage 'Approve RC?'
 timeout(time: 1, unit: 'DAYS') {
@@ -47,11 +42,12 @@ timeout(time: 1, unit: 'DAYS') {
 
 stage 'Publish release candidate'
 node {
-    unstash 'source'
-    sh 'chmod 755 gradlew'
-    sh './gradlew clean build release uploadArchives -x test'
+    def currentVersion = version()
+    build job: 'Activities-config-publish-release',
+                  parameters: [[$class: 'StringParameterValue', name: 'CURRENT_VERSION', value: currentVersion]]
+}
 
-    build job: 'Activities-config-tag-release',
-                  parameters: [[$class: 'GitParameterValue', name: 'GIT_COMMIT_ID', value: COMMIT_ID],
-                               [$class: 'StringParameterValue', name: 'APP_VERSION', value: APP_VERSION]]
-}*/
+def version() {
+    def matcher = readFile('gradle.properties')
+    matcher.replaceFirst('version=', '')
+}
