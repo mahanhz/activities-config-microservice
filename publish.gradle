@@ -16,7 +16,7 @@ gradle.taskGraph.whenReady { taskGraph ->
 
 release {
 	git {
-		rusername = mahanhz
+		username = mahanhz
 		password = Github1980
 	}
 }
