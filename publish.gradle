@@ -14,6 +14,13 @@ gradle.taskGraph.whenReady { taskGraph ->
 	}
 }
 
+release {
+	git {
+		rusername = mahanhz
+		password = Github1980
+	}
+}
+
 uploadArchives {
 	repositories {
 		mavenDeployer {
