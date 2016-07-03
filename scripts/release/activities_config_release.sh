@@ -22,7 +22,7 @@ elif [ "$semanticVersionSegment" == "major" ]; then
 	minor=0
 	patch=0
 else
-	echo "Invalid release type"
+	echo "Invalid release type: $semanticVersionSegment"
 fi
 
 version=$major.$minor.$patch
