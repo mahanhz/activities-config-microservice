@@ -1,5 +1,4 @@
 group = 'com.amhzing.activities-config'
-version = file("version.txt").text
 
 jar {
 	baseName = 'activities-config-microservice'
