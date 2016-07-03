@@ -5,7 +5,7 @@ APP_VERSION = ""
 
 node {
 stage 'Version'
-echo "The current version is: " + version()
+echo "The current version is: " + readFile('gradle.properties')
 }
 
 def version() {
