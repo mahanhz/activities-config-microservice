@@ -2,16 +2,16 @@
 
 stage 'Approve deploy?'
 timeout(time: 5, unit: 'MINUTES') {
-    input message: 'Deploy snapshot?'
+    input message: 'Deploy to production?'
 }
 
-stage name: 'Deploy snapshot', concurrency: 1
+stage name: 'Deploy production', concurrency: 1
 node {
     checkout scm
     
     stash excludes: 'build/', includes: '**', name: 'source'
 
-    sh './gradlew deployToTest -PrepoId=snapshots -PartifactVersion=LATEST'
+    sh './gradlew deployToProduction -PrepoId=releases -PartifactVersion=RELEASE'
 }
 
 stage 'Health check'
@@ -23,7 +23,7 @@ node {
         unstash 'source'
         sh 'chmod 755 gradlew'
 
-        sh 'SPRING_PROFILES_ACTIVE=testServer1 ./gradlew smokeTest'
+        sh 'SPRING_PROFILES_ACTIVE=prodServer1 ./gradlew smokeTest'
     }
 }
 

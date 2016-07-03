@@ -1,5 +1,5 @@
 spring:
-  profiles: prodServer1
+  profiles: testServer1
 
 server:
   base-uri: http://192.168.1.33
@@ -7,6 +7,10 @@ server:
 ---
 
 spring:
-  profiles: prodServer2
+  profiles: prodServer1
+
+server:
+  base-uri: http://192.168.1.33
+
 
 
