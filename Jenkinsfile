@@ -29,12 +29,14 @@ node {
 stage name: 'Merge', concurrency: 1
 node {
     unstash 'source'
+    sh 'chmod 755 gradlew'
     build job: 'Activities-config-merge', parameters: [[$class: 'GitParameterValue', name: 'GIT_COMMIT_ID', value: COMMIT_ID]]
 }
 
 stage name: 'Publish snapshot', concurrency: 1
 node {
     unstash 'source'
+    sh 'chmod 755 gradlew'
     sh './gradlew build uploadArchives'
 }
 
@@ -46,6 +48,7 @@ timeout(time: 1, unit: 'DAYS') {
 stage 'Publish release candidate'
 node {
     unstash 'source'
+    sh 'chmod 755 gradlew'
     sh './gradlew clean build release uploadArchives -x test'
 
     build job: 'Activities-config-tag-release',

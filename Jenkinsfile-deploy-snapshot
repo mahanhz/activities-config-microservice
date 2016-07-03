@@ -7,6 +7,10 @@ timeout(time: 5, unit: 'MINUTES') {
 
 stage name: 'Deploy snapshot', concurrency: 1
 node {
+    checkout scm
+    
+    stash excludes: 'build/', includes: '**', name: 'source'
+
     sh './gradlew deployToProduction -PrepoId=snapshots -PartifactVersion=LATEST'
 }
 
@@ -15,6 +19,9 @@ node {
     retry(5) {
         // Give the application some time to start up
         // sleep 30
+
+        unstash 'source'
+        sh 'chmod 755 gradlew'
 
         sh 'SPRING_PROFILES_ACTIVE=prodServer1 ./gradlew smokeTest'
     }
