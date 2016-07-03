@@ -1,4 +1,4 @@
-def deployFolder="deploy/"
+def deployFolder="scripts/deploy/"
 def deployFilePrefix="activities_config_"
 
 def deployScript = deployFilePrefix + "deploy.sh"
