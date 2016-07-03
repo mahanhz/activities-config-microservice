@@ -5,6 +5,15 @@ APP_VERSION = ""
 
 node {
 stage 'Version'
-APP_VERSION = readFile('gradle.properties')
-echo "2 - The current version is: " + APP_VERSION.substring(APP_VERSION.lastIndexOf("="))
+
+    def props = new Properties()
+    new File("gradle.properties").withInputStream {
+      stream -> props.load(stream)
+    }
+
+    echo "1 - The current version is: " + props["version"]
+}
+
+def version() {
+
 }
