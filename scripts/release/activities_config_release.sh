@@ -12,12 +12,12 @@ patch=`echo $version | cut -d. -f3`
 
 echo "major=$major, minor=$minor, patch=$patch"
 
-if [ $semanticVersionSegment == "patch" ]; then
+if [ $semanticVersionSegment = "patch" ]; then
 	patch=$((patch+1))
-elif [ $semanticVersionSegment == "minor" ]; then
+elif [ $semanticVersionSegment = "minor" ]; then
 	minor=$((minor+1))
 	patch=0
-elif [ $semanticVersionSegment == "major" ]; then
+elif [ $semanticVersionSegment = "major" ]; then
 	major=$((major+1))
 	minor=0
 	patch=0

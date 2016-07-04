@@ -33,7 +33,7 @@ stage name: 'Publish snapshot', concurrency: 1
 node {
     unstash 'source'
     sh 'chmod 755 gradlew'
-    sh './gradlew build uploadArchives'
+    sh './gradlew build snapshot uploadArchives -x test'
 }
 
 stage 'Approve RC?'
@@ -46,7 +46,7 @@ timeout(time: 1, unit: 'DAYS') {
                   name: 'SEMANTIC_VERSION_SEGMENT']]
 }
 
-stage 'Publish release candidate'
+stage 'Publish RC', concurrency: 1
 node {
     def currentVersion = version()
     build job: 'Activities-config-publish-release',
