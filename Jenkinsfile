@@ -1,6 +1,7 @@
 #!groovy
 
 COMMIT_ID = ""
+SELECTED_SEMANTIC_VERSION_SEGMENT = "patch"
 
 stage 'Build'
 node {
@@ -16,42 +17,41 @@ node {
     COMMIT_ID = readFile('commit').trim()
 }
 
-/*stage 'Integration test'
+stage 'Integration test'
 node {
     unstash 'source'
     sh 'chmod 755 gradlew'
     sh './gradlew integrationTest'
-}*/
+}
 
 stage name: 'Merge', concurrency: 1
 node {
     build job: 'Activities-config-merge', parameters: [[$class: 'GitParameterValue', name: 'GIT_COMMIT_ID', value: COMMIT_ID]]
 }
 
-/*stage name: 'Publish snapshot', concurrency: 1
+stage name: 'Publish snapshot', concurrency: 1
 node {
     unstash 'source'
     sh 'chmod 755 gradlew'
     sh './gradlew build uploadArchives'
-}*/
+}
 
 stage 'Approve RC?'
 timeout(time: 1, unit: 'DAYS') {
-    input message: 'Publish release candidate?'
+    SELECTED_SEMANTIC_VERSION_SEGMENT =
+    input message: 'Publish release candidate?',
+    parameters: [[$class: 'ChoiceParameterDefinition',
+                  choices: 'patch\nminor\nmajor',
+                  description: 'Semantic version segment to update',
+                  name: 'SEMANTIC_VERSION_SEGMENT']]
 }
 
 stage 'Publish release candidate'
 node {
-    input message: 'Determine semantic version?',
-    parameters: [[$class: 'ChoiceParameterDefinition',
-                  choices: 'patch\nminor\nmajor',
-                  description: 'Semantic version segment to update',
-                  name: 'semanticVersionSegment']]
-
     def currentVersion = version()
     build job: 'Activities-config-publish-release',
                   parameters: [[$class: 'StringParameterValue', name: 'CURRENT_VERSION', value: currentVersion],
-                  [$class: 'StringParameterValue', name: 'SEMANTIC_VERSION_SEGMENT', value: ${env.semanticVersionSegment}]]
+                               [$class: 'StringParameterValue', name: 'SEMANTIC_VERSION_SEGMENT', value: SELECTED_SEMANTIC_VERSION_SEGMENT]]
 }
 
 def version() {
