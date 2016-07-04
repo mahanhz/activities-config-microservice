@@ -11,7 +11,9 @@ node {
     
     stash excludes: 'build/', includes: '**', name: 'source'
 
-    sh './gradlew deployToProduction -PrepoId=releases -PartifactVersion=RELEASE'
+    sh '''TAG=`git describe --abbrev=0`
+          echo "Deploy version ${TAG}"
+          ./gradlew deployToProduction -PrepoId=releases -PartifactVersion=$TAG'''
 }
 
 stage 'Health check'
