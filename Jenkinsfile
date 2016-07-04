@@ -46,7 +46,7 @@ timeout(time: 1, unit: 'DAYS') {
                   name: 'SEMANTIC_VERSION_SEGMENT']]
 }
 
-stage 'Publish RC', concurrency: 1
+stage name: 'Publish RC', concurrency: 1
 node {
     def currentVersion = version()
     build job: 'Activities-config-publish-release',
