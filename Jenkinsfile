@@ -10,6 +10,4 @@ timeout(time: 1, unit: 'DAYS') {
 
     def result2 = env.SEMANTIC_VERSION_SEGMENT
     echo "result2: " + result2
-    def result3 = ${SEMANTIC_VERSION_SEGMENT}
-    echo "result3: " + result3
 }
