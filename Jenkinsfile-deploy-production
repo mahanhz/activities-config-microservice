@@ -1,8 +1,24 @@
 #!groovy
 
+SELECTED_DEPLOYMENT_OPTION = "latest"
+SPECIFIC_VERSION = ""
+
 stage 'Approve deploy?'
 timeout(time: 5, unit: 'MINUTES') {
-    input message: 'Deploy to production?'
+    SELECTED_DEPLOYMENT_OPTION =
+    input message: 'Deploy to production?', parameters: [[$class: 'ChoiceParameterDefinition',
+                                                          choices: 'latest\nspecific\ncancel',
+                                                          description: 'Semantic version segment to update',
+                                                          name: 'DEPLOYMENT_OPTION']]
+    if (SELECTED_DEPLOYMENT_OPTION == "specific") {
+        SPECIFIC_VERSION =
+                input message: 'Enter version?', parameters: [[$class: 'StringParameterDefinition',
+                                                               defaultValue: '',
+                                                               description: 'Specific version to deploy',
+                                                               name: 'SPECIFIC_VERSION_TO_DEPLOY']]
+    } else if (SELECTED_DEPLOYMENT_OPTION == "cancel") {
+        throw new RuntimeException("Deployment cancelled")
+    }
 }
 
 stage name: 'Deploy production', concurrency: 1
@@ -11,9 +27,17 @@ node {
     
     stash excludes: 'build/', includes: '**', name: 'source'
 
-    sh '''TAG=`git describe --abbrev=0`
-          echo "Deploy version ${TAG}"
-          ./gradlew deployToProduction -PrepoId=releases -PartifactVersion=$TAG'''
+    if (SELECTED_DEPLOYMENT_OPTION == "latest") {
+        sh '''TAG=`git describe --abbrev=0`
+              ./gradlew deployToProduction -PrepoId=releases -PartifactVersion=$TAG'''
+    } else if (SELECTED_DEPLOYMENT_OPTION == "latest") {
+        echo 'Deploying specific version: ${SPECIFIC_VERSION}'
+        sh './gradlew deployToProduction -PrepoId=releases -PartifactVersion=${SPECIFIC_VERSION}'
+    } else {
+        throw new RuntimeException("Invalid deployment option selected: ${SELECTED_DEPLOYMENT_OPTION}")
+    }
+
+
 }
 
 stage 'Health check'

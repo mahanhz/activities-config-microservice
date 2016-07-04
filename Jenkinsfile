@@ -40,10 +40,10 @@ stage 'Approve RC?'
 timeout(time: 1, unit: 'DAYS') {
     SELECTED_SEMANTIC_VERSION_SEGMENT =
     input message: 'Publish release candidate?',
-    parameters: [[$class: 'ChoiceParameterDefinition',
-                  choices: 'patch\nminor\nmajor',
-                  description: 'Semantic version segment to update',
-                  name: 'SEMANTIC_VERSION_SEGMENT']]
+          parameters: [[$class: 'ChoiceParameterDefinition',
+                        choices: 'patch\nminor\nmajor',
+                        description: 'Semantic version segment to update',
+                        name: 'SEMANTIC_VERSION_SEGMENT']]
 }
 
 stage name: 'Publish RC', concurrency: 1
