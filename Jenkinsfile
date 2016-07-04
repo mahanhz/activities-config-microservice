@@ -8,7 +8,7 @@ timeout(time: 1, unit: 'DAYS') {
                   description: 'Semantic version segment to update',
                   name: 'SEMANTIC_VERSION_SEGMENT']]
 
-    def result2 = $SEMANTIC_VERSION_SEGMENT
+    def result2 = env.SEMANTIC_VERSION_SEGMENT
     echo "result2: " + result2
     def result3 = ${SEMANTIC_VERSION_SEGMENT}
     echo "result3: " + result3
