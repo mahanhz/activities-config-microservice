@@ -44,6 +44,15 @@ cd /opt/$APP_DIR
 sudo rm *.jar *.conf
 echo "$ARTIFACT_URL"
 wget -qO $ARTIFACT $ARTIFACT_URL
+
+if [ -s $ARTIFACT ]
+then
+    echo "Got $ARTIFACT for version $VERSION"
+else
+    echo "Could not get $ARTIFACT for version $VERSION"
+    exit 1
+fi
+
 sudo chown -R $APP_USER:$APP_USER $ARTIFACT
 sudo chmod 500 $ARTIFACT
 
