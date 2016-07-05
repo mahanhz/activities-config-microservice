@@ -1,7 +1,7 @@
 #!groovy
 
 COMMIT_ID = ""
-NEW_VERSION = ""
+RELEASE_VERSION = ""
 SELECTED_SEMANTIC_VERSION_UPDATE = ""
 
 stage 'Build'
@@ -17,7 +17,7 @@ node {
     sh 'git rev-parse HEAD > commit'
     COMMIT_ID = readFile('commit').trim()
 
-    NEW_VERSION = version()
+    RELEASE_VERSION = version()
 }
 
 stage 'Integration test'
@@ -41,7 +41,7 @@ node {
 
 stage 'Approve RC?'
 timeout(time: 1, unit: 'DAYS') {
-    def descr = "If unchanged released version will be: " + NEW_VERSION
+    def descr = "If unchanged released version will be: " + RELEASE_VERSION
 
     SELECTED_SEMANTIC_VERSION_UPDATE =
             input message: 'Publish release candidate?',
@@ -54,7 +54,7 @@ timeout(time: 1, unit: 'DAYS') {
 stage name: 'Publish RC', concurrency: 1
 node {
     build job: 'Activities-config-publish-release',
-            parameters: [[$class: 'StringParameterValue', name: 'NEW_VERSION', value: NEW_VERSION],
+            parameters: [[$class: 'StringParameterValue', name: 'RELEASE_VERSION', value: RELEASE_VERSION],
                          [$class: 'StringParameterValue', name: 'SEMANTIC_VERSION_UPDATE', value: SELECTED_SEMANTIC_VERSION_UPDATE]]
 }
 

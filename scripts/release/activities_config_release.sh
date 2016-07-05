@@ -1,14 +1,14 @@
 #!/bin/sh
 
 echo "Passed in arguments are: $1, $2"
-version=$1
+releaseVersion=$1
 semanticVersionUpdate=$2
 
-echo "New version starting point: $version"
+echo "Release version starting point: $releaseVersion"
 
-major=`echo $version | cut -d. -f1`
-minor=`echo $version | cut -d. -f2`
-patch=`echo $version | cut -d. -f3`
+major=`echo $releaseVersion | cut -d. -f1`
+minor=`echo $releaseVersion | cut -d. -f2`
+patch=`echo $releaseVersion | cut -d. -f3`
 
 echo "major=$major, minor=$minor, patch=$patch"
 
@@ -27,8 +27,9 @@ else
 	echo "Invalid semantic version update: $semanticVersionUpdate"
 fi
 
-version=$major.$minor.$patch
+releaseVersion=$major.$minor.$patch
+nextVersion=$major.$minor.$((patch+1))
 
-echo "New version after update: $version"
+echo "Release version after update: $releaseVersion"
 
-./gradlew release -Prelease.useAutomaticVersion=true -Prelease.releaseVersion=$version
+./gradlew release -Prelease.useAutomaticVersion=true -Prelease.releaseVersion=$releaseVersion -Prelease.newVersion=$nextVersion
