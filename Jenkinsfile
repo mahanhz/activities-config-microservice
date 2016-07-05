@@ -15,9 +15,6 @@ node {
     // See http://stackoverflow.com/questions/36304208/jenkins-workflow-checkout-accessing-branch-name-and-git-commit
     sh 'git rev-parse HEAD > commit'
     COMMIT_ID = readFile('commit').trim()
-
-    def props = readProperties file: 'gradle.properties'
-    echo "1 - version is: " + props['version']
 }
 
 stage 'Integration test'
@@ -58,6 +55,6 @@ node {
 }
 
 def version() {
-    def matcher = readFile('gradle.properties')
-    matcher.replaceFirst('version=', '')
+    def props = readProperties file: 'gradle.properties'
+    return props['version']
 }
