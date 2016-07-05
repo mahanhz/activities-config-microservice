@@ -1,7 +1,7 @@
 #!groovy
 
 COMMIT_ID = ""
-def NEW_VERSION = version()
+NEW_VERSION = ""
 SELECTED_SEMANTIC_VERSION_UPDATE = ""
 
 stage 'Build'
@@ -16,6 +16,8 @@ node {
     // See http://stackoverflow.com/questions/36304208/jenkins-workflow-checkout-accessing-branch-name-and-git-commit
     sh 'git rev-parse HEAD > commit'
     COMMIT_ID = readFile('commit').trim()
+
+    NEW_VERSION = version()
 }
 
 stage 'Integration test'
