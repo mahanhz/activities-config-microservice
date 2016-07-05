@@ -1,6 +1,7 @@
 #!groovy
 
 COMMIT_ID = ""
+NEW_VERSION = version()
 SELECTED_SEMANTIC_VERSION_UPDATE = ""
 
 stage 'Build'
@@ -38,19 +39,20 @@ node {
 
 stage 'Approve RC?'
 timeout(time: 1, unit: 'DAYS') {
+    def descr = "If unchanged then released version will be: " + NEW_VERSION
+
     SELECTED_SEMANTIC_VERSION_UPDATE =
             input message: 'Publish release candidate?',
                     parameters: [[$class: 'ChoiceParameterDefinition',
                                   choices: 'unchanged\nmajor\nminor\npatch',
-                                  description: 'Semantic version update',
+                                  description: descr,
                                   name: 'Semantic version for this release']]
 }
 
 stage name: 'Publish RC', concurrency: 1
 node {
-    def currentVersion = version()
     build job: 'Activities-config-publish-release',
-            parameters: [[$class: 'StringParameterValue', name: 'CURRENT_VERSION', value: currentVersion],
+            parameters: [[$class: 'StringParameterValue', name: 'NEW_VERSION', value: NEW_VERSION],
                          [$class: 'StringParameterValue', name: 'SEMANTIC_VERSION_UPDATE', value: SELECTED_SEMANTIC_VERSION_UPDATE]]
 }
 
