@@ -1,8 +1,13 @@
 #!groovy
 
+SNAPSHOT_VERSION = ""
+
 stage 'Approve deploy?'
 timeout(time: 5, unit: 'MINUTES') {
-    input message: 'Deploy snapshot?'
+    SNAPSHOT_VERSION = version() + "-SNAPSHOT"
+    def messageText = "Deploy snapshot version " + SNAPSHOT_VERSION + "?"
+
+    input message: messageText
 }
 
 stage name: 'Deploy snapshot', concurrency: 1
@@ -11,7 +16,7 @@ node {
     
     stash excludes: 'build/', includes: '**', name: 'source'
 
-    sh './gradlew deployToTest -PrepoId=snapshots -PartifactVersion=' + version()
+    sh './gradlew deployToTest -PrepoId=snapshots -PartifactVersion=' + SNAPSHOT_VERSION
 }
 
 stage 'Health check'
