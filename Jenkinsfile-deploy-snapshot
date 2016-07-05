@@ -11,7 +11,7 @@ node {
     
     stash excludes: 'build/', includes: '**', name: 'source'
 
-    sh './gradlew deployToTest -PrepoId=snapshots -PartifactVersion=LATEST'
+    sh './gradlew deployToTest -PrepoId=snapshots -PartifactVersion=' + version()
 }
 
 stage 'Health check'
@@ -27,3 +27,7 @@ node {
     }
 }
 
+def version() {
+    def props = readProperties file: 'gradle.properties'
+    return props['version']
+}
