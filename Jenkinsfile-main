@@ -36,7 +36,7 @@ stage name: 'Publish snapshot', concurrency: 1
 node {
     unstash 'source'
     sh 'chmod 755 gradlew'
-    sh './gradlew build snapshot uploadArchives -x test'
+    sh './gradlew build uploadArchives -x test'
 }
 
 stage 'Approve RC?'
