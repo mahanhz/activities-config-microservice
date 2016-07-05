@@ -4,7 +4,7 @@ echo "Passed in arguments are: $1, $2"
 version=$1
 semanticVersionUpdate=$2
 
-echo "current version=$version"
+echo "New version starting point: $version"
 
 major=`echo $version | cut -d. -f1`
 minor=`echo $version | cut -d. -f2`
@@ -29,6 +29,6 @@ fi
 
 version=$major.$minor.$patch
 
-echo "new version=$version"
+echo "New version after update: $version"
 
-./gradlew release -Prelease.useAutomaticVersion=true
+./gradlew release -Prelease.useAutomaticVersion=true -Prelease.releaseVersion=$version
