@@ -16,8 +16,8 @@ node {
     sh 'git rev-parse HEAD > commit'
     COMMIT_ID = readFile('commit').trim()
 
-echo "about to out evn path"
-    echo env.PATH
+    def props = readProperties file: 'gradle.properties'
+    echo "1 - version is: " + props['version']
 }
 
 stage 'Integration test'
@@ -46,7 +46,7 @@ timeout(time: 1, unit: 'DAYS') {
                     parameters: [[$class: 'ChoiceParameterDefinition',
                                   choices: 'unchanged\nmajor\nminor\npatch',
                                   description: 'Semantic version update',
-                                  name: 'RC_SEMANTIC_VERSION']]
+                                  name: 'Semantic version for this release']]
 }
 
 stage name: 'Publish RC', concurrency: 1
