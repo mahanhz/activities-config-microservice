@@ -1,7 +1,7 @@
 #!groovy
 
 COMMIT_ID = ""
-NEW_VERSION = version()
+def NEW_VERSION = version()
 SELECTED_SEMANTIC_VERSION_UPDATE = ""
 
 stage 'Build'
