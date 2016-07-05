@@ -48,7 +48,7 @@ timeout(time: 1, unit: 'DAYS') {
                     parameters: [[$class: 'ChoiceParameterDefinition',
                                   choices: 'unchanged\nmajor\nminor\npatch',
                                   description: descr,
-                                  name: 'Semantic version for this release']]
+                                  name: '']]
 }
 
 stage name: 'Publish RC', concurrency: 1
