@@ -1,7 +1,7 @@
 #!groovy
 
 COMMIT_ID = ""
-SELECTED_SEMANTIC_VERSION_SEGMENT = "patch"
+SELECTED_SEMANTIC_VERSION_UPDATE = ""
 
 stage 'Build'
 node {
@@ -15,6 +15,9 @@ node {
     // See http://stackoverflow.com/questions/36304208/jenkins-workflow-checkout-accessing-branch-name-and-git-commit
     sh 'git rev-parse HEAD > commit'
     COMMIT_ID = readFile('commit').trim()
+
+    echo "1 - Version is: " + System.getEnv("version")
+    echo "2 - Version is: ${version}"
 }
 
 stage 'Integration test'
@@ -38,20 +41,20 @@ node {
 
 stage 'Approve RC?'
 timeout(time: 1, unit: 'DAYS') {
-    SELECTED_SEMANTIC_VERSION_SEGMENT =
-    input message: 'Publish release candidate?',
-          parameters: [[$class: 'ChoiceParameterDefinition',
-                        choices: 'patch\nminor\nmajor',
-                        description: 'Semantic version segment to update',
-                        name: 'SEMANTIC_VERSION_SEGMENT']]
+    SELECTED_SEMANTIC_VERSION_UPDATE =
+            input message: 'Publish release candidate?',
+                    parameters: [[$class: 'ChoiceParameterDefinition',
+                                  choices: 'unchanged\nmajor\nminor\npatch',
+                                  description: 'Semantic version update',
+                                  name: 'RC_SEMANTIC_VERSION']]
 }
 
 stage name: 'Publish RC', concurrency: 1
 node {
     def currentVersion = version()
     build job: 'Activities-config-publish-release',
-                  parameters: [[$class: 'StringParameterValue', name: 'CURRENT_VERSION', value: currentVersion],
-                               [$class: 'StringParameterValue', name: 'SEMANTIC_VERSION_SEGMENT', value: SELECTED_SEMANTIC_VERSION_SEGMENT]]
+            parameters: [[$class: 'StringParameterValue', name: 'CURRENT_VERSION', value: currentVersion],
+                         [$class: 'StringParameterValue', name: 'SEMANTIC_VERSION_UPDATE', value: SELECTED_SEMANTIC_VERSION_UPDATE]]
 }
 
 def version() {
