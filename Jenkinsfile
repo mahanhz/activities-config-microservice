@@ -16,7 +16,8 @@ node {
     sh 'git rev-parse HEAD > commit'
     COMMIT_ID = readFile('commit').trim()
 
-    echo "2 - Version is: ${version}"
+echo "about to out evn path"
+    echo env.PATH
 }
 
 stage 'Integration test'
