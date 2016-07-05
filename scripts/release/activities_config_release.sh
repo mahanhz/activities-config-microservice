@@ -28,8 +28,7 @@ else
 fi
 
 releaseVersion=$major.$minor.$patch
-nextVersion=$major.$minor.$((patch+1))
 
 echo "Release version after update: $releaseVersion"
 
-./gradlew release -Prelease.useAutomaticVersion=true -Prelease.releaseVersion=$releaseVersion -Prelease.newVersion=$nextVersion
+./gradlew release -Prelease.useAutomaticVersion=true -Prelease.releaseVersion=$releaseVersion
