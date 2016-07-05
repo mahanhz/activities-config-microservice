@@ -4,16 +4,6 @@ jar {
 	baseName = 'activities-config-microservice'
 }
 
-task snapshot << {
-	println "Building snapshot version=$version"
-}
-
-gradle.taskGraph.whenReady { taskGraph ->
-	if (taskGraph.hasTask(snapshot)) {
-		version += '-SNAPSHOT'
-	}
-}
-
 uploadArchives {
 	repositories {
 		mavenDeployer {
