@@ -63,5 +63,4 @@ echo "Set up the application to start automatically on boot"
 sudo update-rc.d $APP_NAME defaults
 
 echo "Restart the app"
-sudo service $APP_NAME stop
-sudo service $APP_NAME start
+sudo service $APP_NAME restart
