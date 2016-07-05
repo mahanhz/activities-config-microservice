@@ -4,9 +4,10 @@ SNAPSHOT_VERSION = ""
 
 stage 'Approve deploy?'
 timeout(time: 5, unit: 'MINUTES') {
-    SNAPSHOT_VERSION = version() + "-SNAPSHOT"
-    def messageText = "Deploy snapshot version " + SNAPSHOT_VERSION + "?"
+    def props = readProperties file: 'gradle.properties'
+    SNAPSHOT_VERSION = props['version'] + "-SNAPSHOT"
 
+    def messageText = "Deploy snapshot version " + SNAPSHOT_VERSION + "?"
     input message: messageText
 }
 
@@ -30,9 +31,4 @@ node {
 
         sh 'SPRING_PROFILES_ACTIVE=testServer1 ./gradlew smokeTest'
     }
-}
-
-def version() {
-    def props = readProperties file: 'gradle.properties'
-    return props['version']
 }
