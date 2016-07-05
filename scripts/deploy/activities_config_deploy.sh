@@ -3,7 +3,7 @@
 echo "Passed in arguments are: $1, $2, $3"
 export REPO_ID=$1
 export VERSION=$2
-export DEPLOY_FILE_PREFIX=$3
+export ENV_CONF=$3
 
 export HOME_DIR=/home/pi
 
@@ -41,7 +41,7 @@ sudo chmod -R 755 $LOG_DIR/$APP_DIR
 
 echo "Get the jar file from Nexus"
 cd /opt/$APP_DIR
-sudo rm *.jar *.conf
+sudo rm -r *
 echo "$ARTIFACT_URL"
 wget -qO $ARTIFACT $ARTIFACT_URL
 
@@ -58,18 +58,23 @@ sudo chmod 500 $ARTIFACT
 
 echo "Move the conf folder (this assumes that the conf file was placed in the user's home directory)"
 cd $HOME_DIR
-sudo mv $DEPLOY_FILE_PREFIX*.conf /opt/$APP_DIR
+sudo mv $ENV_CONF /opt/$APP_DIR
 cd /opt/$APP_DIR
-sudo mv $DEPLOY_FILE_PREFIX*.conf $CONF
+sudo mv $ENV_CONF $CONF
 sudo chown -R $APP_USER:$APP_USER $CONF
 sudo chmod 500 $CONF
 
-
 echo "Create a symlink"
-sudo ln -s /opt/$APP_DIR/$ARTIFACT /etc/init.d/$APP_NAME
+cd /etc/init.d
+sudo rm $APP_NAME
+sudo ln -s /opt/$APP_DIR/$ARTIFACT $APP_NAME
 
 echo "Set up the application to start automatically on boot"
+sudo update-rc.d $APP_NAME remove
 sudo update-rc.d $APP_NAME defaults
 
-echo "Restart the app"
+echo "Kill the PID"
+ps -ef | grep $APP_NAME | grep -v grep | awk '{print $2}' | xargs kill
+
+echo "Retart the app"
 sudo service $APP_NAME restart

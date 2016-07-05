@@ -34,7 +34,7 @@ task deployToTest << {
             execute "sudo chmod 744 ${testConf}"
             execute "sudo chmod 744 ${deployScript}"
 
-            execute "sudo ./${deployScript} ${repoId} ${artifactVersion} ${deployFilePrefix}"
+            execute "sudo ./${deployScript} ${repoId} ${artifactVersion} ${testConf}"
             execute "sudo rm ${deployFilePrefix}*"
         }
     }
@@ -49,7 +49,7 @@ task deployToProduction << {
             execute "sudo chmod 744 ${productionConf}"
             execute "sudo chmod 744 ${deployScript}"
 
-            execute "sudo ./${deployScript} ${repoId} ${artifactVersion} ${deployFilePrefix}"
+            execute "sudo ./${deployScript} ${repoId} ${artifactVersion} ${productionConf}"
             execute "sudo rm ${deployFilePrefix}*"
         }
     }
