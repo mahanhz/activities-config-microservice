@@ -32,5 +32,6 @@ releaseVersion=$major.$minor.$patch
 nextVersion=$major.$minor.$((patch+1))$snapshotSuffix
 
 echo "Release version after update: $releaseVersion"
+echo "Next version: $nextVersion"
 
 ./gradlew release -Prelease.useAutomaticVersion=true -Prelease.releaseVersion=$releaseVersion -Prelease.newVersion=$nextVersion
