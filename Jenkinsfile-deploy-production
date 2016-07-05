@@ -8,14 +8,14 @@ timeout(time: 5, unit: 'MINUTES') {
     SELECTED_DEPLOYMENT_OPTION =
     input message: 'Deploy to production?', parameters: [[$class: 'ChoiceParameterDefinition',
                                                           choices: 'latest\nspecific',
-                                                          description: 'Semantic version segment to update',
-                                                          name: 'DEPLOYMENT_OPTION']]
+                                                          description: 'The latest or a specific manually entered version',
+                                                          name: '']]
     if (SELECTED_DEPLOYMENT_OPTION == "specific") {
         SPECIFIC_VERSION =
                 input message: 'Enter version?', parameters: [[$class: 'StringParameterDefinition',
                                                                defaultValue: '',
                                                                description: 'Specific version to deploy',
-                                                               name: 'SPECIFIC_VERSION_TO_DEPLOY']]
+                                                               name: '']]
     }
 }
 
