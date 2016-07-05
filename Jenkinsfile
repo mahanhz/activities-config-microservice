@@ -16,7 +16,6 @@ node {
     sh 'git rev-parse HEAD > commit'
     COMMIT_ID = readFile('commit').trim()
 
-    echo "1 - Version is: " + System.getEnv("version")
     echo "2 - Version is: ${version}"
 }
 
