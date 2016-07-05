@@ -63,7 +63,7 @@ def releaseVersion() {
     def version = props['version']
 
     if (version.contains('-SNAPSHOT')) {
-        version.replaceFirst('-SNAPSHOT', '')
+        version = version.replaceFirst('-SNAPSHOT', '')
     }
 
     return version
