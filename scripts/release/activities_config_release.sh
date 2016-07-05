@@ -3,6 +3,7 @@
 echo "Passed in arguments are: $1, $2"
 releaseVersion=$1
 semanticVersionUpdate=$2
+snapshotSuffix="-SNAPSHOT"
 
 echo "Release version starting point: $releaseVersion"
 
@@ -28,7 +29,8 @@ else
 fi
 
 releaseVersion=$major.$minor.$patch
+nextVersion=$major.$minor.$((patch+1))$snapshotSuffix
 
 echo "Release version after update: $releaseVersion"
 
-./gradlew release -Prelease.useAutomaticVersion=true -Prelease.releaseVersion=$releaseVersion
+./gradlew release -Prelease.useAutomaticVersion=true -Prelease.releaseVersion=$releaseVersion -Prelease.newVersion=$nextVersion

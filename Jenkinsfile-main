@@ -17,7 +17,7 @@ node {
     sh 'git rev-parse HEAD > commit'
     COMMIT_ID = readFile('commit').trim()
 
-    RELEASE_VERSION = version()
+    RELEASE_VERSION = releaseVersion()
 }
 
 stage 'Integration test'
@@ -58,7 +58,13 @@ node {
                          [$class: 'StringParameterValue', name: 'SEMANTIC_VERSION_UPDATE', value: SELECTED_SEMANTIC_VERSION_UPDATE]]
 }
 
-def version() {
+def releaseVersion() {
     def props = readProperties file: 'gradle.properties'
-    return props['version']
+    def version = props['version']
+
+    if (version.contains('-SNAPSHOT')) {
+        version -= '-SNAPSHOT'
+    }
+
+    return version
 }
