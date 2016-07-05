@@ -41,7 +41,7 @@ node {
 
 stage 'Approve RC?'
 timeout(time: 1, unit: 'DAYS') {
-    def descr = "If unchanged then released version will be: " + NEW_VERSION
+    def descr = "If unchanged released version will be: " + NEW_VERSION
 
     SELECTED_SEMANTIC_VERSION_UPDATE =
             input message: 'Publish release candidate?',
