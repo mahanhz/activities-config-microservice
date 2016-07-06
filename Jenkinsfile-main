@@ -56,9 +56,8 @@ node {
     checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'LocalBranch', localBranch: 'master'], [$class: 'WipeWorkspace']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '620e1fdc-9ae7-4f9d-aa0f-701a3482ef49', url: 'git@github.com:mahanhz/activities-config-microservice.git']]])
 
     sh '''git config --global user.email mahanhz@gmail.com
-          git config --global user.name mahanhz'''
-    
-    sh "./scripts/release/activities_config_release.sh ${RELEASE_VERSION} ${SEMANTIC_VERSION_UPDATE}"
+          git config --global user.name mahanhz
+          ./scripts/release/activities_config_release.sh ${RELEASE_VERSION} ${SEMANTIC_VERSION_UPDATE}'''
 }
 
 def releaseVersion() {
