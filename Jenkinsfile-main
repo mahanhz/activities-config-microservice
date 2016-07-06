@@ -53,16 +53,9 @@ timeout(time: 1, unit: 'DAYS') {
 
 stage name: 'Publish RC', concurrency: 1
 node {
-    checkout([$class: 'GitSCM',
-              branches: [[name: '*/master']],
-              doGenerateSubmoduleConfigurations: false,
-              extensions: [[$class: 'LocalBranch', localBranch: 'master'], [$class: 'WipeWorkspace']],
-              submoduleCfg: [],
-              userRemoteConfigs: [[credentialsId: '620e1fdc-9ae7-4f9d-aa0f-701a3482ef49', url: 'https://mahanhz@github.com/mahanhz/activities-config-microservice.git']]])
-
-    withCredentials([[$class: 'UsernamePasswordBinding', credentialsId: '620e1fdc-9ae7-4f9d-aa0f-701a3482ef49', variable: 'git']]) {
-        sh "./scripts/release/activities_config_release.sh ${RELEASE_VERSION} ${SEMANTIC_VERSION_UPDATE}"
-    }
+    build job: 'Activities-config-publish-release',
+            parameters: [[$class: 'StringParameterValue', name: 'RELEASE_VERSION', value: RELEASE_VERSION],
+                         [$class: 'StringParameterValue', name: 'SEMANTIC_VERSION_UPDATE', value: SELECTED_SEMANTIC_VERSION_UPDATE]]
 }
 
 def releaseVersion() {
