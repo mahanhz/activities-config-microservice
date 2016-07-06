@@ -58,8 +58,7 @@ node {
               doGenerateSubmoduleConfigurations: false,
               extensions: [[$class: 'LocalBranch', localBranch: 'master'], [$class: 'WipeWorkspace']],
               submoduleCfg: [],
-              userRemoteConfigs: [[credentialsId: '620e1fdc-9ae7-4f9d-aa0f-701a3482ef49',
-                                   url: 'https://github.com/mahanhz/activities-config-microservice.git']]])
+              userRemoteConfigs: [[url: 'git@github.com:mahanhz/activities-config-microservice.git']]])
 
     sh "./scripts/release/activities_config_release.sh ${RELEASE_VERSION} ${SEMANTIC_VERSION_UPDATE}"
 }
