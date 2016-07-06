@@ -39,7 +39,7 @@ node {
                    userRemoteConfigs: [[url: 'git@github.com:mahanhz/activities-config-microservice.git']]]
 
     sh '''git merge ${COMMIT_ID}
-          git push origin master'''
+          git push origin HEAD:master'''
 }
 
 stage name: 'Publish snapshot', concurrency: 1
