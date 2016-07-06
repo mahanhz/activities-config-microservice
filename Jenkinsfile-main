@@ -38,7 +38,8 @@ node {
                    submoduleCfg: [],
                    userRemoteConfigs: [[url: 'git@github.com:mahanhz/activities-config-microservice.git']]]
 
-    sh "git merge -s recursive --no-ff ${COMMIT_ID}"
+    sh '''git merge ${COMMIT_ID}
+          git push origin master'''
 }
 
 stage name: 'Publish snapshot', concurrency: 1
