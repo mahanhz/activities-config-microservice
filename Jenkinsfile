@@ -6,6 +6,8 @@ SELECTED_SEMANTIC_VERSION_UPDATE = ""
 
 stage 'Build'
 node {
+    echo "branch: " + env.BRANCH_NAME
+    
     checkout scm
 
     sh './gradlew clean build'
