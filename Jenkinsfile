@@ -2,6 +2,7 @@
 
 COMMIT_ID = ""
 RELEASE_VERSION = ""
+RELEASE_VERSION2 = releaseVersion2()
 SELECTED_SEMANTIC_VERSION_UPDATE = ""
 
 echo "is master: " + isMasterBranch()
@@ -77,6 +78,17 @@ node {
 }
 
 def releaseVersion() {
+    def props = readProperties file: 'gradle.properties'
+    def version = props['version']
+
+    if (version.contains('-SNAPSHOT')) {
+        version = version.replaceFirst('-SNAPSHOT', '')
+    }
+
+    return version
+}
+
+releaseVersion2() {
     def props = readProperties file: 'gradle.properties'
     def version = props['version']
 
