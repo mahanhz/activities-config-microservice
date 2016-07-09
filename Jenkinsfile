@@ -38,12 +38,6 @@ if (!isMasterBranch()) {
 }
 
 if (isMasterBranch()) {
-    stage name: 'Publish snapshot', concurrency: 1
-    node {
-        unstash 'source'
-        sh 'chmod 755 gradlew'
-        sh './gradlew build uploadArchives -x test'
-    }
 
     stage 'Approve RC?'
     timeout(time: 1, unit: 'DAYS') {
@@ -61,6 +55,7 @@ if (isMasterBranch()) {
     node {
         checkout scm
 
+        sh "git branch -a -v --no-abbrev"
         sh "git checkout -b master " + COMMIT_ID
         sh "./scripts/release/activities_config_release.sh ${RELEASE_VERSION} ${SELECTED_SEMANTIC_VERSION_UPDATE}"
     }
