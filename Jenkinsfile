@@ -20,13 +20,6 @@ node {
     RELEASE_VERSION = releaseVersion()
 }
 
-stage 'Integration test'
-node {
-    unstash 'commitSource'
-    sh 'chmod 755 gradlew'
-    sh './gradlew integrationTest'
-}
-
 stage name: 'Merge', concurrency: 1
 node {
     checkout changelog: false,
@@ -41,14 +34,8 @@ node {
     sh "git merge ${COMMIT_ID}"
     sh "git push origin master"
 
-    stash excludes: 'build/', includes: '**', name: 'masterSource'
-}
-
-stage name: 'Publish snapshot', concurrency: 1
-node {
-    unstash 'masterSource'
-    sh 'chmod 755 gradlew'
-    sh './gradlew build uploadArchives -x test'
+    stash excludes: 'build/', includes: '**', name: 'snapshotMasterSource'
+    stash excludes: 'build/', includes: '**', name: 'releaseMasterSource'
 }
 
 stage 'Approve RC?'
@@ -67,7 +54,7 @@ stage name: 'Publish RC', concurrency: 1
 node {
     def script = "scripts/release/activities_config_release.sh"
 
-    unstash 'masterSource'
+    unstash 'releaseMasterSource'
     sh 'chmod 755 gradlew'
     sh "chmod 755 " + script
     sh "./" + script + " ${RELEASE_VERSION} ${SELECTED_SEMANTIC_VERSION_UPDATE}"
