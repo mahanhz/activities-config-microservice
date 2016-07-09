@@ -65,16 +65,11 @@ timeout(time: 1, unit: 'DAYS') {
 
 stage name: 'Publish RC', concurrency: 1
 node {
-    checkout changelog: false,
-             poll: false,
-             scm: [$class: 'GitSCM',
-                   branches: [[name: '*/master']],
-                   doGenerateSubmoduleConfigurations: false,
-                   extensions: [[$class: 'LocalBranch', localBranch: 'master'], [$class: 'WipeWorkspace']],
-                   submoduleCfg: [],
-                   userRemoteConfigs: [[url: 'git@github.com:mahanhz/activities-config-microservice.git']]]
+    def script = "scripts/release/activities_config_release.sh"
 
-    sh "./scripts/release/activities_config_release.sh ${RELEASE_VERSION} ${SELECTED_SEMANTIC_VERSION_UPDATE}"
+    unstash 'masterSource'
+    sh "chmod 755 " + script
+    sh "./" + script + " ${RELEASE_VERSION} ${SELECTED_SEMANTIC_VERSION_UPDATE}"
 }
 
 def releaseVersion() {
