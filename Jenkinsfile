@@ -27,9 +27,7 @@ if (!isMasterBranch()) {
 
     stage name: 'Merge', concurrency: 1
     node {
-        checkout changelog: false,
-                 poll: false,
-                 scm: [$class: 'GitSCM',
+        checkout scm: [$class: 'GitSCM',
                        branches: [[name: '*/master']],
                        doGenerateSubmoduleConfigurations: false,
                        extensions: [[$class: 'LocalBranch', localBranch: 'master'], [$class: 'WipeWorkspace']],
@@ -47,6 +45,8 @@ if (isMasterBranch()) {
         unstash 'source'
         sh 'chmod 755 gradlew'
         sh './gradlew build uploadArchives -x test'
+
+        stash excludes: 'build/, .gradle/', includes: '**', name: 'releaseSource'
     }
 
     stage 'Approve RC?'
@@ -63,14 +63,12 @@ if (isMasterBranch()) {
 
     stage name: 'Publish RC', concurrency: 1
     node {
-        checkout scm: [$class: 'GitSCM',
-                       branches: [[name: '*/master']],
-                       doGenerateSubmoduleConfigurations: false,
-                       extensions: [[$class: 'LocalBranch', localBranch: 'master'], [$class: 'WipeWorkspace']],
-                       submoduleCfg: [],
-                       userRemoteConfigs: [[url: 'git@github.com:mahanhz/activities-config-microservice.git']]]
+        def script = "scripts/release/activities_config_release.sh"
 
-        sh "./scripts/release/activities_config_release.sh ${RELEASE_VERSION} ${SELECTED_SEMANTIC_VERSION_UPDATE}"
+        unstash 'releaseSource'
+        sh 'chmod 755 gradlew'
+        sh "chmod 755 " + script
+        sh "./" + script + " ${RELEASE_VERSION} ${SELECTED_SEMANTIC_VERSION_UPDATE}"
     }
 }
 

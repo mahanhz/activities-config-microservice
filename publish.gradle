@@ -17,4 +17,12 @@ uploadArchives {
 	}
 }
 
+release {
+	failOnUpdateNeeded = false // This allows an older master to be published (e.g. latest master did not pass all tests)
+
+	git {
+		requireBranch = '' // This allows the master commit id to be used instead
+	}
+}
+
 afterReleaseBuild.dependsOn uploadArchives
