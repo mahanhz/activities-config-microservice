@@ -4,7 +4,7 @@ COMMIT_ID = ""
 RELEASE_VERSION = ""
 SELECTED_SEMANTIC_VERSION_UPDATE = ""
 
-echo "branch: " + env.BRANCH_NAME
+echo "is master: " + isMasterBranch()
 
 stage 'Build'
 node {
@@ -22,6 +22,7 @@ node {
     RELEASE_VERSION = releaseVersion()
 }
 
+if ()
 stage 'Integration test'
 node {
     unstash 'commitSource'
@@ -85,4 +86,8 @@ def releaseVersion() {
     }
 
     return version
+}
+
+def isMasterBranch() {
+    return env.BRANCH_NAME == "master"
 }
