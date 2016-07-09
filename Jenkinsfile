@@ -4,10 +4,10 @@ COMMIT_ID = ""
 RELEASE_VERSION = ""
 SELECTED_SEMANTIC_VERSION_UPDATE = ""
 
+echo "branch: " + env.BRANCH_NAME
+
 stage 'Build'
 node {
-    echo "branch: " + env.BRANCH_NAME
-    
     checkout scm
 
     sh './gradlew clean build'
@@ -20,6 +20,13 @@ node {
     COMMIT_ID = readFile('commit').trim()
 
     RELEASE_VERSION = releaseVersion()
+}
+
+stage 'Integration test'
+node {
+    unstash 'commitSource'
+    sh 'chmod 755 gradlew'
+    sh './gradlew integrationTest'
 }
 
 stage name: 'Merge', concurrency: 1
@@ -37,7 +44,14 @@ node {
     sh "git push origin master"
 
     stash excludes: 'build/', includes: '**', name: 'snapshotMasterSource'
-    stash excludes: 'build/', includes: '**', name: 'releaseMasterSource'
+    stash excludes: 'build/, .gradle/', includes: '**', name: 'releaseMasterSource'
+}
+
+stage name: 'Publish snapshot', concurrency: 1
+node {
+    unstash 'snapshotMasterSource'
+    sh 'chmod 755 gradlew'
+    sh './gradlew build uploadArchives -x test'
 }
 
 stage 'Approve RC?'
