@@ -53,7 +53,12 @@ if (isMasterBranch()) {
 
     stage name: 'Publish RC', concurrency: 1
     node {
-        checkout scm
+        checkout scm: [$class: 'GitSCM',
+                       branches: [[name: '*/master']],
+                       doGenerateSubmoduleConfigurations: false,
+                       extensions: [[$class: 'LocalBranch', localBranch: 'master'], [$class: 'WipeWorkspace']],
+                       submoduleCfg: [],
+                       userRemoteConfigs: [[url: 'git@github.com:mahanhz/activities-config-microservice.git']]]
 
         sh "git branch -a -v --no-abbrev"
         sh "git checkout -b release " + COMMIT_ID
