@@ -58,7 +58,7 @@ if (isMasterBranch()) {
         checkout scm: [$class: 'GitSCM',
                        branches: [[name: COMMIT_ID]],
                        doGenerateSubmoduleConfigurations: false,
-                       extensions: [[$class: 'LocalBranch', localBranch: 'master'], [$class: 'WipeWorkspace']],
+                       extensions: [[$class: 'LocalBranch', localBranch: 'release'], [$class: 'WipeWorkspace']],
                        submoduleCfg: [],
                        userRemoteConfigs: [[url: 'git@github.com:mahanhz/activities-config-microservice.git']]]
 
