@@ -19,7 +19,7 @@ public class ActivitiesConfigApplication {
 class PingController {
 
 	@RequestMapping("/ping")
-	final String getMessage() {
+	final String ping() {
 		return "Hi there! I'm awake!";
 	}
 }

@@ -9,11 +9,11 @@ spring:
 
 server:
   port: 13301
-  context-path: /${appContextPath}
+  context-path: /activitiesConfig
 
 management:
   port: 13302
-  context-path: /${appContextPath}/manage
+  context-path: /activitiesConfig/manage
 
 info:
   build:

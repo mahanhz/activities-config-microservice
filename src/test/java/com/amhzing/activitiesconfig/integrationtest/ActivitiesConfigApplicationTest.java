@@ -28,10 +28,16 @@ public class ActivitiesConfigApplicationTest {
     @Value("${local.management.port}")
     private int managementPort = 0;
 
+    @Value("${server.context-path}")
+    private String serverContextPath;
+
+    @Value("${management.context-path}")
+    private String managementContextPath;
+
     @Test
     public void configurationAvailable() {
-        final ResponseEntity<Map> entity = new TestRestTemplate().getForEntity(
-                "http://localhost:" + port + "/app/default", Map.class);
+        final ResponseEntity<String> entity = new TestRestTemplate().getForEntity(
+                "http://localhost:" + port + serverContextPath + "/ping", String.class);
 
         assertEquals(HttpStatus.OK, entity.getStatusCode());
     }
@@ -39,7 +45,7 @@ public class ActivitiesConfigApplicationTest {
     @Test
     public void managementAvailable() {
         ResponseEntity<Map> entity = new TestRestTemplate().getForEntity(
-                "http://localhost:" + managementPort + "/manage", Map.class);
+                "http://localhost:" + managementPort + managementContextPath, Map.class);
 
         assertEquals(HttpStatus.OK, entity.getStatusCode());
     }
@@ -48,7 +54,7 @@ public class ActivitiesConfigApplicationTest {
     public void envPostAvailable() {
         final MultiValueMap<String, String> form = new LinkedMultiValueMap<String, String>();
         final ResponseEntity<Map> entity = new TestRestTemplate().postForEntity(
-                "http://localhost:" + managementPort + "/manage/env", form, Map.class);
+                "http://localhost:" + managementPort + managementContextPath + "/env", form, Map.class);
 
         assertEquals(HttpStatus.OK, entity.getStatusCode());
     }
