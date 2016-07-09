@@ -22,6 +22,10 @@ release {
 	failOnCommitNeeded = false
 	failOnUnversionedFiles = false
 	failOnUpdateNeeded = false
+
+	git {
+		requireBranch = 'release'
+	}
 }
 
 afterReleaseBuild.dependsOn uploadArchives

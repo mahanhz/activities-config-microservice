@@ -53,10 +53,10 @@ if (isMasterBranch()) {
 
     stage name: 'Publish RC', concurrency: 1
     node {
-        //checkout scm
+        checkout scm
 
         sh "git branch -a -v --no-abbrev"
-        sh "git checkout -b master " + COMMIT_ID
+        sh "git checkout -b release " + COMMIT_ID
         sh "./scripts/release/activities_config_release.sh ${RELEASE_VERSION} ${SELECTED_SEMANTIC_VERSION_UPDATE}"
     }
 }
