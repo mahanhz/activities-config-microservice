@@ -17,15 +17,4 @@ uploadArchives {
 	}
 }
 
-release {
-	// These allow an older master to be published (e.g. latest master did not pass all tests)
-	failOnCommitNeeded = false
-	failOnUnversionedFiles = false
-	failOnUpdateNeeded = false
-
-	git {
-		requireBranch = 'release'
-	}
-}
-
 afterReleaseBuild.dependsOn uploadArchives
