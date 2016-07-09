@@ -68,6 +68,7 @@ node {
     def script = "scripts/release/activities_config_release.sh"
 
     unstash 'masterSource'
+    sh 'chmod 755 gradlew'
     sh "chmod 755 " + script
     sh "./" + script + " ${RELEASE_VERSION} ${SELECTED_SEMANTIC_VERSION_UPDATE}"
 }
