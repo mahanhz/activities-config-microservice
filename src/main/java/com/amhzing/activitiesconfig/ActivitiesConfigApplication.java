@@ -20,6 +20,6 @@ class PingController {
 
 	@RequestMapping("/ping")
 	final String ping() {
-		return "Hi there! I'm awake! REL10";
+		return "Hi there! I'm awake! TEST10";
 	}
 }
