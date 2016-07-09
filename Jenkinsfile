@@ -46,7 +46,7 @@ node {
 
 stage name: 'Publish snapshot', concurrency: 1
 node {
-    unstash 'commitSource'
+    unstash 'masterSource'
     sh 'chmod 755 gradlew'
     sh './gradlew build uploadArchives -x test'
 }
@@ -74,13 +74,11 @@ node {
                    submoduleCfg: [],
                    userRemoteConfigs: [[url: 'git@github.com:mahanhz/activities-config-microservice.git']]]
 
-    unstash 'masterSource'
-
     sh "./scripts/release/activities_config_release.sh ${RELEASE_VERSION} ${SELECTED_SEMANTIC_VERSION_UPDATE}"
 }
 
 def releaseVersion() {
-    def props = readProperties file: 'version.properties'
+    def props = readProperties file: 'gradle.properties'
     def version = props['version']
 
     if (version.contains('-SNAPSHOT')) {
