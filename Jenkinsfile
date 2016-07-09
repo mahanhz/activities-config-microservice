@@ -45,8 +45,6 @@ if (isMasterBranch()) {
         unstash 'source'
         sh 'chmod 755 gradlew'
         sh './gradlew build uploadArchives -x test'
-
-        stash excludes: 'build/, .gradle/', includes: '**', name: 'releaseSource'
     }
 
     stage 'Approve RC?'
@@ -65,7 +63,7 @@ if (isMasterBranch()) {
     node {
         def script = "scripts/release/activities_config_release.sh"
 
-        unstash 'releaseSource'
+        unstash 'source'
         sh 'chmod 755 gradlew'
         sh "chmod 755 " + script
         sh "./" + script + " ${RELEASE_VERSION} ${SELECTED_SEMANTIC_VERSION_UPDATE}"
