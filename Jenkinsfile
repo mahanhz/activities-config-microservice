@@ -22,7 +22,6 @@ node {
     RELEASE_VERSION = releaseVersion()
 }
 
-if ()
 stage 'Integration test'
 node {
     unstash 'commitSource'
