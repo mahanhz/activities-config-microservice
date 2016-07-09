@@ -4,8 +4,6 @@ COMMIT_ID = ""
 RELEASE_VERSION = ""
 SELECTED_SEMANTIC_VERSION_UPDATE = ""
 
-echo "is master: " + isMasterBranch()
-
 stage 'Build'
 node {
     checkout scm
@@ -61,12 +59,10 @@ if (isMasterBranch()) {
 
     stage name: 'Publish RC', concurrency: 1
     node {
-        def script = "scripts/release/activities_config_release.sh"
+        checkout scm
 
-        unstash 'source'
-        sh 'chmod 755 gradlew'
-        sh "chmod 755 " + script
-        sh "./" + script + " ${RELEASE_VERSION} ${SELECTED_SEMANTIC_VERSION_UPDATE}"
+        sh "git checkout -b master " + COMMIT_ID
+        sh "./scripts/release/activities_config_release.sh ${RELEASE_VERSION} ${SELECTED_SEMANTIC_VERSION_UPDATE}"
     }
 }
 

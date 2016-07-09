@@ -22,10 +22,6 @@ release {
 	failOnCommitNeeded = false
 	failOnUnversionedFiles = false
 	failOnUpdateNeeded = false
-
-	git {
-		requireBranch = '' // This allows the master commit id to be used instead
-	}
 }
 
 afterReleaseBuild.dependsOn uploadArchives
