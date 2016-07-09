@@ -17,4 +17,8 @@ uploadArchives {
 	}
 }
 
+release {
+	versionPropertyFile = 'version.properties'
+}
+
 afterReleaseBuild.dependsOn uploadArchives

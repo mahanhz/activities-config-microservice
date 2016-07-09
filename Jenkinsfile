@@ -10,7 +10,7 @@ node {
 
     sh './gradlew clean build'
 
-    stash excludes: 'build/', includes: '**', name: 'source'
+    stash excludes: 'build/', includes: '**', name: 'commitSource'
 
     // Obtaining commit id like this until JENKINS-26100 is implemented
     // See http://stackoverflow.com/questions/36304208/jenkins-workflow-checkout-accessing-branch-name-and-git-commit
@@ -22,7 +22,7 @@ node {
 
 stage 'Integration test'
 node {
-    unstash 'source'
+    unstash 'commitSource'
     sh 'chmod 755 gradlew'
     sh './gradlew integrationTest'
 }
@@ -40,11 +40,13 @@ node {
 
     sh "git merge ${COMMIT_ID}"
     sh "git push origin master"
+
+    stash excludes: 'build/', includes: '**', name: 'masterSource'
 }
 
 stage name: 'Publish snapshot', concurrency: 1
 node {
-    unstash 'source'
+    unstash 'commitSource'
     sh 'chmod 755 gradlew'
     sh './gradlew build uploadArchives -x test'
 }
@@ -72,11 +74,13 @@ node {
                    submoduleCfg: [],
                    userRemoteConfigs: [[url: 'git@github.com:mahanhz/activities-config-microservice.git']]]
 
+    unstash 'masterSource'
+
     sh "./scripts/release/activities_config_release.sh ${RELEASE_VERSION} ${SELECTED_SEMANTIC_VERSION_UPDATE}"
 }
 
 def releaseVersion() {
-    def props = readProperties file: 'gradle.properties'
+    def props = readProperties file: 'version.properties'
     def version = props['version']
 
     if (version.contains('-SNAPSHOT')) {

@@ -4,6 +4,9 @@ spring:
 server:
   base-uri: http://192.168.1.33
 
+management:
+  context-path: /activitiesConfig/manage
+
 ---
 
 spring:
@@ -11,6 +14,9 @@ spring:
 
 server:
   base-uri: http://192.168.1.33
+
+management:
+  context-path: /activitiesConfig/manage
 
 
 
