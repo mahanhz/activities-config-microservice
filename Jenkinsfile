@@ -53,7 +53,7 @@ if (isMasterBranch()) {
 
     stage name: 'Publish RC', concurrency: 1
     node {
-        checkout scm
+        //checkout scm
 
         sh "git branch -a -v --no-abbrev"
         sh "git checkout -b master " + COMMIT_ID
