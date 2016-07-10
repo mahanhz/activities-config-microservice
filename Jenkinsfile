@@ -78,7 +78,7 @@ if (isMasterBranch()) {
         unstash 'source'
         unstash 'masterProperties'
 
-        //sh "./scripts/release/activities_config_release.sh ${RELEASE_VERSION} ${SELECTED_SEMANTIC_VERSION_UPDATE}"
+        sh "./scripts/release/activities_config_release.sh ${RELEASE_VERSION} ${SELECTED_SEMANTIC_VERSION_UPDATE}"
     }
 }
 
