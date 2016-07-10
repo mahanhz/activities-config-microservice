@@ -21,12 +21,12 @@ node {
 }
 
 if (!isMasterBranch()) {
-    /*stage 'Integration test'
+    stage 'Integration test'
     node {
         unstash 'source'
         sh 'chmod 755 gradlew'
         sh './gradlew integrationTest'
-    }*/
+    }
 
     stage name: 'Merge', concurrency: 1
     node {
@@ -43,12 +43,12 @@ if (!isMasterBranch()) {
 }
 
 if (isMasterBranch()) {
-    /*stage name: 'Publish snapshot', concurrency: 1
+    stage name: 'Publish snapshot', concurrency: 1
     node {
         unstash 'source'
         sh 'chmod 755 gradlew'
         sh './gradlew build uploadArchives -x test'
-    }*/
+    }
 
     stage 'Approve RC?'
     timeout(time: 1, unit: 'DAYS') {
