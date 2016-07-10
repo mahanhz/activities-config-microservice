@@ -3,16 +3,17 @@
 COMMIT_ID = ""
 FALLBACK_RELEASE_VERSION = ""
 SELECTED_SEMANTIC_VERSION_UPDATE = ""
+NUMBER_OF_BUILD_TO_KEEP = "5"
+
+properties([[$class: 'BuildDiscarderProperty', strategy:
+            [$class: 'LogRotator', artifactDaysToKeepStr: '',
+             artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: NUMBER_OF_BUILD_TO_KEEP]],
+            [$class: 'ThrottleJobProperty', categories: [], limitOneJobWithMatchingParams: false,
+             maxConcurrentPerNode: 0, maxConcurrentTotal: 0, paramsToUseForLimit: '',
+             throttleEnabled: false, throttleOption: 'project']])
 
 stage 'Build'
 node {
-    properties( [[$class: 'BuildDiscarderProperty', strategy:
-                [$class: 'LogRotator', artifactDaysToKeepStr: '',
-                 artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '10']],
-                [$class: 'ThrottleJobProperty', categories: [], limitOneJobWithMatchingParams: false,
-                 maxConcurrentPerNode: 0, maxConcurrentTotal: 0, paramsToUseForLimit: '',
-                 throttleEnabled: false, throttleOption: 'project']])
-
     checkout scm
 
     sh './gradlew clean build'
