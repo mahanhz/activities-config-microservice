@@ -80,7 +80,7 @@ if (isMasterBranch()) {
         sh "chmod 755 " + script
         sh 'chmod 755 gradlew'
 
-        sh "./" + script + " ${RELEASE_VERSION} ${SELECTED_SEMANTIC_VERSION_UPDATE}"
+        sh "./" + script + " ${SELECTED_SEMANTIC_VERSION_UPDATE}"
     }
 }
 

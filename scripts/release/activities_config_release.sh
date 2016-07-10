@@ -1,16 +1,19 @@
 #!/bin/sh
 
-echo "Passed in arguments are: $1, $2"
-versionToRelease=$1
-semanticVersionUpdate=$2
+echo "Passed in arguments are: $1"
+semanticVersionUpdate=$1
 snapshotSuffix="-SNAPSHOT"
-latestTag=`git describe --abbrev=0`
 
-if [[ -z "$latestTag" ]]; then
-    echo "Release version before semantic update (from latest tag): $latestTag"
-    $versionToRelease=$latestTag
-else
-    echo "Release version before semantic update (from version file): $versionToRelease"
+# Fetch the latest version from Nexus
+nexusMetadata=`curl -s -L "http://192.168.1.31:8082/nexus/service/local/repositories/releases/content/com/amhzing/activities-config/activities-config-microservice/maven-metadata.xml"`
+versionToRelease=`echo $nexusMetadata | grep -oP '<version>\d+\.\d+\.\d+</version>' | grep -oP '\d+\.\d+\.\d+' | sort -t '.' -k 1,1nr -k 2,2nr -k 3,3nr | head -1`
+
+echo "Latest version from: $versionToRelease"
+
+if [[ -z "$versionToRelease" ]]
+then
+    echo "Could not find version: $versionToRelease"
+    exit 1
 fi
 
 major=`echo $versionToRelease | cut -d. -f1`
