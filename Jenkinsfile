@@ -3,7 +3,7 @@
 COMMIT_ID = ""
 FALLBACK_RELEASE_VERSION = ""
 SELECTED_SEMANTIC_VERSION_UPDATE = ""
-NUMBER_OF_BUILD_TO_KEEP = "5"
+NUMBER_OF_BUILD_TO_KEEP = "10"
 
 properties([[$class: 'BuildDiscarderProperty', strategy:
             [$class: 'LogRotator', artifactDaysToKeepStr: '',
