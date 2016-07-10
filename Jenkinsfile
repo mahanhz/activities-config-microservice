@@ -4,6 +4,12 @@ COMMIT_ID = ""
 FALLBACK_RELEASE_VERSION = ""
 SELECTED_SEMANTIC_VERSION_UPDATE = ""
 
+properties [[$class: 'BuildDiscarderProperty', strategy: [$class: 'LogRotator', artifactDaysToKeepStr: '',
+             artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '10']],
+            [$class: 'ThrottleJobProperty', categories: [], limitOneJobWithMatchingParams: false,
+             maxConcurrentPerNode: 0, maxConcurrentTotal: 0, paramsToUseForLimit: '',
+             throttleEnabled: false, throttleOption: 'project']]
+
 stage 'Build'
 node {
     checkout scm
