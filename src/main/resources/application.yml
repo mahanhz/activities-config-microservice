@@ -4,6 +4,7 @@ info:
     description: ${description}
     version: ${version}
     jenkins:
+      node: ${jenkinsNode}
       job-name: ${jenkinsJobName}
       build-timestamp: ${jenkinsBuildTimestamp}
       build-id: ${jenkinsBuildId}

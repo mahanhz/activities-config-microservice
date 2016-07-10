@@ -25,6 +25,9 @@ node {
     sh 'git rev-parse HEAD > commit'
     COMMIT_ID = readFile('commit').trim()
 
+    // Custom environment variable (e.g. for display in Spring Boot manage info page)
+    env.GIT_COMMIT_ID = COMMIT_ID
+
     FALLBACK_RELEASE_VERSION = releaseVersion()
 }
 
