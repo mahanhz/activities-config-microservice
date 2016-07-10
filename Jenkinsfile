@@ -1,7 +1,7 @@
 #!groovy
 
 COMMIT_ID = ""
-RELEASE_VERSION = ""
+FALLBACK_RELEASE_VERSION = ""
 SELECTED_SEMANTIC_VERSION_UPDATE = ""
 
 stage 'Build'
@@ -17,7 +17,7 @@ node {
     sh 'git rev-parse HEAD > commit'
     COMMIT_ID = readFile('commit').trim()
 
-    RELEASE_VERSION = releaseVersion()
+    FALLBACK_RELEASE_VERSION = releaseVersion()
 }
 
 if (!isMasterBranch()) {
@@ -80,7 +80,7 @@ if (isMasterBranch()) {
         sh "chmod 755 " + script
         sh 'chmod 755 gradlew'
 
-        sh "./" + script + " ${SELECTED_SEMANTIC_VERSION_UPDATE}"
+        sh "./" + script + " ${SELECTED_SEMANTIC_VERSION_UPDATE} ${FALLBACK_RELEASE_VERSION}"
     }
 }
 

@@ -1,19 +1,22 @@
 #!/bin/sh
 
-echo "Passed in arguments are: $1"
+echo "Passed in arguments are: $1, $2"
 semanticVersionUpdate=$1
+fallbackReleaseVersion=$2
 snapshotSuffix="-SNAPSHOT"
 
 # Fetch the latest version from Nexus
 nexusMetadata=`curl -s -L "http://192.168.1.31:8082/nexus/service/local/repositories/releases/content/com/amhzing/activities-config/activities-config-microservice/maven-metadata.xml"`
 versionToRelease=`echo $nexusMetadata | grep -oP '<version>\d+\.\d+\.\d+</version>' | grep -oP '\d+\.\d+\.\d+' | sort -t '.' -k 1,1nr -k 2,2nr -k 3,3nr | head -1`
 
-echo "Latest version from: $versionToRelease"
+echo "Latest version from Nexus: $versionToRelease"
 
-if [[ -z "$versionToRelease" ]]
+if [ -z "$versionToRelease" ]
 then
-    echo "Could not find version: $versionToRelease"
-    exit 1
+    echo "Could not find a version in Nexus"
+    echo "Fallback to release version (from properties file): $fallbackReleaseVersion"
+    versionToRelease=$fallbackReleaseVersion
+    semanticVersionUpdate="unchanged"
 fi
 
 major=`echo $versionToRelease | cut -d. -f1`
