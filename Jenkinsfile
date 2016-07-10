@@ -6,11 +6,12 @@ SELECTED_SEMANTIC_VERSION_UPDATE = ""
 
 stage 'Build'
 node {
-    properties [[$class: 'BuildDiscarderProperty', strategy: [$class: 'LogRotator', artifactDaysToKeepStr: '',
+    properties( [[$class: 'BuildDiscarderProperty', strategy:
+                [$class: 'LogRotator', artifactDaysToKeepStr: '',
                  artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '10']],
                 [$class: 'ThrottleJobProperty', categories: [], limitOneJobWithMatchingParams: false,
                  maxConcurrentPerNode: 0, maxConcurrentTotal: 0, paramsToUseForLimit: '',
-                 throttleEnabled: false, throttleOption: 'project']]
+                 throttleEnabled: false, throttleOption: 'project']])
 
     checkout scm
 
