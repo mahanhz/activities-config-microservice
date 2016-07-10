@@ -4,8 +4,14 @@ echo "Passed in arguments are: $1, $2"
 versionToRelease=$1
 semanticVersionUpdate=$2
 snapshotSuffix="-SNAPSHOT"
+latestTag=`git describe --abbrev=0`
 
-echo "Release version before semantic update: $versionToRelease"
+if [[ -z "$latestTag" ]]; then
+    echo "Release version before semantic update (from latest tag): $latestTag"
+    $versionToRelease=$latestTag
+else
+    echo "Release version before semantic update (from version file): $versionToRelease"
+fi
 
 major=`echo $versionToRelease | cut -d. -f1`
 minor=`echo $versionToRelease | cut -d. -f2`

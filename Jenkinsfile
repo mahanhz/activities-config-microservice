@@ -52,14 +52,11 @@ if (isMasterBranch()) {
 
     stage 'Approve RC?'
     timeout(time: 1, unit: 'DAYS') {
-        def descr = "If unchanged released version will be: " + RELEASE_VERSION
-
         SELECTED_SEMANTIC_VERSION_UPDATE =
                 input message: 'Publish release candidate?',
                         parameters: [[$class: 'ChoiceParameterDefinition',
-                                      choices: 'unchanged\nmajor\nminor\npatch',
-                                      description: descr,
-                                      name: '']]
+                                      choices: 'patch\nminor\nmajor',
+                                      description: 'Determine the semantic version to release']]
     }
 
     stage name: 'Publish RC', concurrency: 1
