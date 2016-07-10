@@ -14,16 +14,3 @@ server:
 management:
   port: 13302
   context-path: /activitiesConfig/manage
-
-info:
-  build:
-    name: ${name}
-    description: ${description}
-    version: ${version}
-    jenkins:
-      job-name: ${jenkinsJobName}
-      build-timestamp: ${jenkinsBuildTimestamp}
-      build-id: ${jenkinsBuildId}
-      build-number: ${jenkinsBuildNumber}
-      git-commit: ${jenkinsGitCommit}
-      git-branch: ${jenkinsGitBranch}
