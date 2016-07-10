@@ -78,7 +78,11 @@ if (isMasterBranch()) {
         unstash 'source'
         unstash 'masterProperties'
 
-        sh "./scripts/release/activities_config_release.sh ${RELEASE_VERSION} ${SELECTED_SEMANTIC_VERSION_UPDATE}"
+        def script = "scripts/release/activities_config_release.sh"
+        sh "chmod 755 " + script
+        sh 'chmod 755 gradlew'
+
+        sh "./" + script + " ${RELEASE_VERSION} ${SELECTED_SEMANTIC_VERSION_UPDATE}"
     }
 }
 
