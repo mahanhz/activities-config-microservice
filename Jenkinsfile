@@ -56,13 +56,18 @@ if (isMasterBranch()) {
         sh "git branch -a -v --no-abbrev"
 
         checkout scm: [$class: 'GitSCM',
-                       branches: [[name: COMMIT_ID]],
+                       branches: [[name: '*/master']],
                        doGenerateSubmoduleConfigurations: false,
-                       extensions: [[$class: 'LocalBranch', localBranch: 'release'], [$class: 'WipeWorkspace']],
+                       extensions: [[$class: 'LocalBranch', localBranch: 'master'], [$class: 'WipeWorkspace']],
                        submoduleCfg: [],
                        userRemoteConfigs: [[url: 'git@github.com:mahanhz/activities-config-microservice.git']]]
 
-        sh "./scripts/release/activities_config_release.sh ${RELEASE_VERSION} ${SELECTED_SEMANTIC_VERSION_UPDATE}"
+        stash includes: 'gradle.properties', name: 'masterProperties'
+
+        unstash 'source'
+        unstash 'masterProperties'
+
+        //sh "./scripts/release/activities_config_release.sh ${RELEASE_VERSION} ${SELECTED_SEMANTIC_VERSION_UPDATE}"
     }
 }
 
