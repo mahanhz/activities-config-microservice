@@ -56,7 +56,8 @@ if (isMasterBranch()) {
                 input message: 'Publish release candidate?',
                         parameters: [[$class: 'ChoiceParameterDefinition',
                                       choices: 'patch\nminor\nmajor',
-                                      description: 'Determine the semantic version to release']]
+                                      description: 'Determine the semantic version to release',
+                                      name: '']]
     }
 
     stage name: 'Publish RC', concurrency: 1
