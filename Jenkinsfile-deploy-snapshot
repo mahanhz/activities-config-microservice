@@ -15,15 +15,23 @@ node {
 }
 
 stage 'Health check'
-node {
-    retry(5) {
-        // Give the application some time to start up
-        // sleep 30
+parallel 'testServer1': {
+    node {
+        retry(5) {
+            unstash 'source'
+            sh 'chmod 755 gradlew'
 
-        unstash 'source'
-        sh 'chmod 755 gradlew'
+            sh 'SPRING_PROFILES_ACTIVE=testServer1 ./gradlew smokeTest'
+        }
+    }
+}, 'testServer2': {
+    node {
+        retry(5) {
+            unstash 'source'
+            sh 'chmod 755 gradlew'
 
-        sh 'SPRING_PROFILES_ACTIVE=testServer1 ./gradlew smokeTest'
+            sh 'SPRING_PROFILES_ACTIVE=testServer2 ./gradlew smokeTest'
+        }
     }
 }
 

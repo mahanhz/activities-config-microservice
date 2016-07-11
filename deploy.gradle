@@ -12,22 +12,33 @@ def productionConfLocation = deployFolder  + productionConf
 
 def remoteLocation = "/home/pi"
 
+ssh.settings {
+    user = 'pi'
+    identity = file("${System.getProperty('user.home')}/.ssh/id_rsa")
+}
+
 remotes {
     testServer1 {
+        role 'testServer'
         host = '192.168.1.33'
-        user = 'pi'
-        identity = file("${System.getProperty('user.home')}/.ssh/id_rsa")
+    }
+    testServer2 {
+        role 'testServer'
+        host = '192.168.1.34'
     }
     prodServer1 {
+        role 'prodServer'
         host = '192.168.1.33'
-        user = 'pi'
-        identity = file("${System.getProperty('user.home')}/.ssh/id_rsa")
+    }
+    prodServer2 {
+        role 'prodServer'
+        host = '192.168.1.34'
     }
 }
 
 task deployToTest << {
     ssh.run {
-        session(remotes.testServer1) {
+        session(remotes.role('testServer')) {
             put from: "${testConfLocation}", into: "${remoteLocation}"
             put from: "${deployScriptLocation}", into: "${remoteLocation}"
 
@@ -42,7 +53,7 @@ task deployToTest << {
 
 task deployToProduction << {
     ssh.run {
-        session(remotes.prodServer1) {
+        session(remotes.role('prodServer')) {
             put from: "${productionConfLocation}", into: "${remoteLocation}"
             put from: "${deployScriptLocation}", into: "${remoteLocation}"
 
