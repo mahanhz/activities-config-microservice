@@ -41,7 +41,7 @@ sudo chmod -R 755 $LOG_DIR/$APP_DIR
 
 echo "Get the jar file from Nexus"
 cd /opt/$APP_DIR
-sudo rm -r *
+sudo rm -r /opt/$APP_DIR/*
 echo "$ARTIFACT_URL"
 wget -qO $ARTIFACT $ARTIFACT_URL
 
