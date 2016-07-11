@@ -3,11 +3,12 @@
 COMMIT_ID = ""
 FALLBACK_RELEASE_VERSION = ""
 SELECTED_SEMANTIC_VERSION_UPDATE = ""
-NUMBER_OF_BUILD_TO_KEEP = "10"
+DAYS_TO_KEEP_BUILDS = "1"
+NUMBER_OF_BUILDS_TO_KEEP = "10"
 
 properties([[$class: 'BuildDiscarderProperty', strategy:
             [$class: 'LogRotator', artifactDaysToKeepStr: '',
-             artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: NUMBER_OF_BUILD_TO_KEEP]],
+             artifactNumToKeepStr: '', daysToKeepStr: DAYS_TO_KEEP_BUILDS, numToKeepStr: NUMBER_OF_BUILDS_TO_KEEP]],
             [$class: 'ThrottleJobProperty', categories: [], limitOneJobWithMatchingParams: false,
              maxConcurrentPerNode: 0, maxConcurrentTotal: 0, paramsToUseForLimit: '',
              throttleEnabled: false, throttleOption: 'project']])
