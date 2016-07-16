@@ -37,7 +37,7 @@ public class ActivitiesConfigApplicationTest {
     @Test
     public void configurationAvailable() {
         final ResponseEntity<String> entity = new TestRestTemplate().getForEntity(
-                "http://localhost:" + port + serverContextPath + "/ping", String.class);
+                "http://localhost:" + port + serverContextPath + "/config-message", String.class);
 
         assertEquals(HttpStatus.OK, entity.getStatusCode());
     }
