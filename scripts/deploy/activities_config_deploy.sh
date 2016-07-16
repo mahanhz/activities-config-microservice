@@ -17,7 +17,7 @@ export LOG_DIR=log
 
 export NEXUS_URL=http://192.168.1.31:8082/nexus/service/local/artifact/maven/content
 export GROUP_ID=com.amhzing.activities-config
-export ARTIFACT_ID=activities-config-microservice
+export ARTIFACT_ID=$APP_NAME
 export ARTIFACT_URL="$NEXUS_URL?r=$REPO_ID&g=$GROUP_ID&a=$ARTIFACT_ID&v=$VERSION"
 export ARTIFACT=$APP_NAME.jar
 export CONF=$APP_NAME.conf

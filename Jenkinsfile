@@ -5,6 +5,7 @@ FALLBACK_RELEASE_VERSION = ""
 SELECTED_SEMANTIC_VERSION_UPDATE = ""
 DAYS_TO_KEEP_BUILDS = "1"
 NUMBER_OF_BUILDS_TO_KEEP = "10"
+REPOSITORY_URL="git@github.com:mahanhz/activities-config-microservice.git"
 
 properties([[$class: 'BuildDiscarderProperty', strategy:
             [$class: 'LogRotator', artifactDaysToKeepStr: '',
@@ -47,7 +48,7 @@ if (!isMasterBranch()) {
                        doGenerateSubmoduleConfigurations: false,
                        extensions: [[$class: 'LocalBranch', localBranch: 'master'], [$class: 'WipeWorkspace']],
                        submoduleCfg: [],
-                       userRemoteConfigs: [[url: 'git@github.com:mahanhz/activities-config-microservice.git']]]
+                       userRemoteConfigs: [[url: REPOSITORY_URL]]]
 
         sh "git merge ${COMMIT_ID}"
         sh "git push origin master"
@@ -81,7 +82,7 @@ if (isMasterBranch()) {
                        doGenerateSubmoduleConfigurations: false,
                        extensions: [[$class: 'LocalBranch', localBranch: 'master'], [$class: 'WipeWorkspace']],
                        submoduleCfg: [],
-                       userRemoteConfigs: [[url: 'git@github.com:mahanhz/activities-config-microservice.git']]]
+                       userRemoteConfigs: [[url: REPOSITORY_URL]]]
 
         stash includes: 'gradle.properties', name: 'masterProperties'
 
