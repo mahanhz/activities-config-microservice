@@ -4,20 +4,7 @@ spring:
   cloud:
     config:
       server:
+        bootstrap: true
         git:
           uri: https://github.com/mahanhz/activities-config
           searchPaths: config*
-
-server:
-  port: 13301
-  context-path: /activitiesConfig
-
-management:
-  port: 13302
-  context-path: /activitiesConfig/manage
-
-eureka:
-  instance:
-    preferIpAddress: true
-    statusPageUrlPath: ${management.context-path}/info
-    healthCheckUrlPath: ${management.context-path}/health
