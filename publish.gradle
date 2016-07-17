@@ -1,5 +1,9 @@
 group = 'com.amhzing.activities-config'
 
+jar {
+	baseName = 'activities-config-microservice'
+}
+
 uploadArchives {
 	repositories {
 		mavenDeployer {
