@@ -4,7 +4,31 @@ spring:
   cloud:
     config:
       server:
-        bootstrap: true
+        #bootstrap: true # Use configuration in the git repository
         git:
           uri: https://github.com/mahanhz/activities-config
           searchPaths: config*
+
+config:
+  message: Greetings from the ACTIVITIES CONFIG microservice [using the BASE config]
+
+server:
+  port: 13301
+  context-path: /activitiesConfig
+
+management:
+  port: 13302
+  context-path: /activitiesConfig/manage
+
+error:
+  whitelabel:
+    enabled: false
+
+eureka:
+  instance:
+    preferIpAddress: true
+    homePageUrl: https://${eureka.instance.hostname}:${server.port}${server.context-path}/
+    statusPageUrl: http://${eureka.instance.hostname}:${management.port}${management.context-path}/info
+    statusPageUrlPath: ${management.context-path}/info
+    healthCheckUrl: http://${eureka.instance.hostname}:${management.port}${management.context-path}/health
+    healthCheckUrlPath: ${management.context-path}/health

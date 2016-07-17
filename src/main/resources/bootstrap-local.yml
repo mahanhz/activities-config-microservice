@@ -1,0 +1,9 @@
+config:
+  message: Greetings from the ACTIVITIES CONFIG microservice [using the LOCAL config]
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:13303/eurekaServer/eureka/
