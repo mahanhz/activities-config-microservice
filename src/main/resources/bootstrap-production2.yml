@@ -1,6 +1,0 @@
-config:
-  message: Greetings from the ACTIVITIES CONFIG microservice [using the PRODUCTION2 config]
-
-eureka:
-  instance:
-    hostname: 192.168.1.34
