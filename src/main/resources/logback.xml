@@ -1,9 +1,10 @@
 <configuration>
+    <shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook" />
 
     <property name="logFileName" value="activities-config-microservice" />
-    <property name="productionProfile" value="production" />
+    <property name="productionProfile" value="local" />
 
-    <if condition='"${productionProfile}".equals("${spring.profiles.active}")'>
+    <if condition='"${spring.profiles.active}".contains("${productionProfile}")'>
         <then>
             <property name="logLevel" value="INFO"/>
         </then>
@@ -27,7 +28,7 @@
             <fileNamePattern>${app.log.path:-.}/${logFileName}.%d{yyyy-MM-dd}.log</fileNamePattern>
             <!-- keep 30 days' worth of history capped at 100MB total size -->
             <maxHistory>30</maxHistory>
-            <totalSizeCap>100MB</totalSizeCap>
+            <!--<totalSizeCap>100MB</totalSizeCap>-->
         </rollingPolicy>
         <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
     </appender>
@@ -44,12 +45,20 @@
         <appender-ref ref="FILE" />
     </appender>
 
+    <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>192.168.1.35:4561</destination>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
+    </appender>
+
     <logger name="com.amhzing" level="${logLevel}" additivity="false">
-        <!-- Write  to stdout if not production profile -->
-        <if condition='!"${productionProfile}".equalsIgnoreCase("${spring.profiles.active}")'>
+        <!-- Write to logstash if production and stdout if not -->
+        <if condition='"${spring.profiles.active}".contains("${productionProfile}")'>
             <then>
-                <appender-ref ref="STDOUT" />
+                <appender-ref ref="LOGSTASH" />
             </then>
+            <else>
+                <appender-ref ref="STDOUT" />
+            </else>
         </if>
         <appender-ref ref="ASYNC_FILE" />
     </logger>
