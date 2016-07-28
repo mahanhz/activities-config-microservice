@@ -2,7 +2,7 @@
     <shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook" />
 
     <property name="logFileName" value="activities-config-microservice" />
-    <property name="productionProfile" value="local" />
+    <property name="productionProfile" value="production" />
 
     <if condition='"${spring.profiles.active}".contains("${productionProfile}")'>
         <then>
