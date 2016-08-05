@@ -3,8 +3,9 @@ package com.amhzing.activitiesconfig.smoketest;
 import com.amhzing.activitiesconfig.ActivitiesConfigApplication;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.TestRestTemplate;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,9 +29,12 @@ public class SmokeTest {
     @Value("${management.context-path}")
     private String managementContextPath;
 
+    @Autowired
+    private TestRestTemplate testRestTemplate;
+
     @Test
     public void healthStatus() {
-        final ResponseEntity<Map> entity = new TestRestTemplate().getForEntity(getUrl(), Map.class);
+        final ResponseEntity<Map> entity = testRestTemplate.getForEntity(getUrl(), Map.class);
 
         assertEquals(HttpStatus.OK, entity.getStatusCode());
 
