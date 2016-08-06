@@ -3,7 +3,6 @@ spring:
     name: activities-config-microservice
   boot:
     admin:
-      url: http://${eureka.instance.hostname}:13307/adminServer
       client:
         health-url: http://${eureka.instance.hostname}:${management.port}${management.context-path}/health
         management-url: http://${eureka.instance.hostname}:${management.port}${management.context-path}
