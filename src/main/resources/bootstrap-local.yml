@@ -1,6 +1,11 @@
 config:
   message: Greetings from the ACTIVITIES CONFIG microservice [using the LOCAL config]
 
+spring:
+  boot:
+    admin:
+      url: http://localhost:13307/adminServer
+
 eureka:
   instance:
     hostname: localhost
