@@ -31,9 +31,6 @@ public class ActivitiesConfigApplicationTest {
     @LocalManagementPort
     private int managementPort = 0;
 
-    @Value("${server.context-path}")
-    private String serverContextPath;
-
     @Value("${management.context-path}")
     private String managementContextPath;
 
@@ -43,7 +40,7 @@ public class ActivitiesConfigApplicationTest {
     @Test
     public void configurationAvailable() {
         final ResponseEntity<String> entity = testRestTemplate.getForEntity(
-                "http://localhost:" + port + serverContextPath + "/config-message", String.class);
+                "http://localhost:" + port + "/config-message", String.class);
 
         assertEquals(HttpStatus.OK, entity.getStatusCode());
     }
