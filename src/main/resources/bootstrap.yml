@@ -1,6 +1,13 @@
 spring:
   application:
     name: activities-config-microservice
+  boot:
+    admin:
+      url: http://${eureka.instance.hostname}:13307/adminServer
+      client:
+        health-url: http://${eureka.instance.hostname}:${management.port}${management.context-path}/health
+        management-url: http://${eureka.instance.hostname}:${management.port}${management.context-path}
+        service-url: http://${eureka.instance.hostname}:${server.port}
   cloud:
     config:
       server:
@@ -14,7 +21,7 @@ config:
 
 server:
   port: 13301
-  context-path: /activitiesConfig
+#  context-path: /activitiesConfig
 
 management:
   port: 13302
@@ -27,7 +34,8 @@ error:
 eureka:
   instance:
     preferIpAddress: true
-    homePageUrl: https://${eureka.instance.hostname}:${server.port}${server.context-path}/
+#    homePageUrl: https://${eureka.instance.hostname}:${server.port}${server.context-path}/
+    homePageUrl: https://${eureka.instance.hostname}:${server.port}/
     statusPageUrl: http://${eureka.instance.hostname}:${management.port}${management.context-path}/info
     statusPageUrlPath: ${management.context-path}/info
     healthCheckUrl: http://${eureka.instance.hostname}:${management.port}${management.context-path}/health
