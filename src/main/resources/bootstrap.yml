@@ -3,6 +3,7 @@ spring:
     name: activities-config-microservice
   boot:
     admin:
+      auto-deregistration: true
       client:
         health-url: http://${eureka.instance.hostname}:${management.port}${management.context-path}/health
         management-url: http://${eureka.instance.hostname}:${management.port}${management.context-path}
